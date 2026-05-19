@@ -12,6 +12,7 @@ import JobPreviewCard from '../components/JobPreviewCard';
 import PipelineStageTabs from '../components/PipelineStageTabs';
 import NotificationCenter from '../components/NotificationCenter';
 import SearchFilter from '../components/SearchFilter';
+import WorkflowModuleExplorer from '../components/WorkflowModuleExplorer';
 
 const statusColumns = [
   { id: 'applied', title: 'Applied' },
@@ -20,69 +21,6 @@ const statusColumns = [
   { id: 'interviewed', title: 'Interviewed' },
   { id: 'offered', title: 'Offered' },
   { id: 'rejected', title: 'Rejected' },
-];
-
-const roleCatalog = [
-  {
-    id: 'frontend',
-    label: 'Frontend Engineer',
-    icon: Code2,
-    level: 'Mid to Senior',
-    engagement: 'Full-time',
-    summary: 'Build polished interfaces, own component systems, and translate product goals into responsive experiences.',
-    skills: ['React', 'TypeScript', 'CSS systems', 'Accessibility'],
-    submit: ['Resume', 'GitHub or portfolio', 'Relevant UI work', 'Availability'],
-  },
-  {
-    id: 'backend',
-    label: 'Backend Engineer',
-    icon: ShieldCheck,
-    level: 'Mid to Senior',
-    engagement: 'Full-time',
-    summary: 'Design APIs, data models, authentication flows, and reliable services that power the product.',
-    skills: ['Node.js', 'Express', 'Databases', 'API design'],
-    submit: ['Resume', 'API/project samples', 'System design notes', 'Availability'],
-  },
-  {
-    id: 'product',
-    label: 'Product Manager',
-    icon: Briefcase,
-    level: 'Senior',
-    engagement: 'Full-time',
-    summary: 'Own roadmap decisions, prioritize initiatives, and keep delivery aligned with business objectives.',
-    skills: ['Roadmapping', 'Stakeholder management', 'Analytics', 'Execution'],
-    submit: ['Resume', 'Product case study', 'Portfolio or case artifacts', 'Availability'],
-  },
-  {
-    id: 'design',
-    label: 'Product Designer',
-    icon: Users,
-    level: 'Mid to Senior',
-    engagement: 'Part-time',
-    summary: 'Shape UX flows, prototypes, and design systems with a high attention to clarity and craft.',
-    skills: ['Figma', 'UX research', 'Design systems', 'Prototyping'],
-    submit: ['Resume', 'Portfolio link', 'Case studies', 'Availability'],
-  },
-  {
-    id: 'ops',
-    label: 'Recruiting Ops',
-    icon: GraduationCap,
-    level: 'Associate to Senior',
-    engagement: 'Part-time',
-    summary: 'Support hiring workflow setup, pipeline hygiene, compliance, and operational reporting.',
-    skills: ['ATS operations', 'Reporting', 'Coordination', 'Process design'],
-    submit: ['Resume', 'Operations examples', 'Process improvements', 'Availability'],
-  },
-  {
-    id: 'mobile',
-    label: 'Mobile Engineer',
-    icon: Laptop,
-    level: 'Mid to Senior',
-    engagement: 'Full-time',
-    summary: 'Ship mobile app experiences, collaborate on product delivery, and keep release quality high.',
-    skills: ['React Native', 'Mobile UX', 'Performance', 'Release management'],
-    submit: ['Resume', 'App store or repo links', 'Mobile project samples', 'Availability'],
-  },
 ];
 
 const stageDefinitions = [
@@ -136,36 +74,173 @@ const stageDefinitions = [
   },
 ];
 
-const hiringPlaybook = [
+const workflowModules = [
   {
-    stage: 'Applied',
-    title: 'Step 1: Confirm submission quality',
-    detail: 'Verify required data, validate the role fit, and move candidates only when the initial profile is complete.',
+    id: 'role-selection',
+    title: 'Role Selection',
+    subtitle: 'Choose a role family and contract type',
+    summary: 'Click this module to pick full-time or part-time roles, then drill into the exact title and submission requirements.',
+    badge: 'Role setup',
+    icon: 'role',
+    accent: 'cyan',
+    description: 'This module defines what the candidate is applying for. It covers role family, engagement type, level, required skills, and what must be submitted before the profile can be reviewed.',
+    engagements: [
+      { id: 'all', label: 'All', description: 'Show every role family in the catalog.' },
+      { id: 'full-time', label: 'Full-time', description: 'Permanent or long-term roles with a dedicated weekly commitment.' },
+      { id: 'part-time', label: 'Part-time', description: 'Flexible or fractional roles with a scoped weekly commitment.' },
+    ],
+    roles: [
+      {
+        id: 'frontend',
+        label: 'Frontend Engineer',
+        level: 'Mid to Senior',
+        engagement: 'Full-time',
+        summary: 'Own UI systems, accessibility, and responsive product experiences.',
+      },
+      {
+        id: 'backend',
+        label: 'Backend Engineer',
+        level: 'Mid to Senior',
+        engagement: 'Full-time',
+        summary: 'Build APIs, services, and data flows that keep the product reliable.',
+      },
+      {
+        id: 'product',
+        label: 'Product Manager',
+        level: 'Senior',
+        engagement: 'Full-time',
+        summary: 'Lead roadmap decisions, prioritization, and stakeholder alignment.',
+      },
+      {
+        id: 'design',
+        label: 'Product Designer',
+        level: 'Mid to Senior',
+        engagement: 'Part-time',
+        summary: 'Shape UX flows, design systems, and prototypes with crisp craft.',
+      },
+      {
+        id: 'ops',
+        label: 'Recruiting Ops',
+        level: 'Associate to Senior',
+        engagement: 'Part-time',
+        summary: 'Maintain pipeline hygiene, reporting, and hiring operations.',
+      },
+      {
+        id: 'mobile',
+        label: 'Mobile Engineer',
+        level: 'Mid to Senior',
+        engagement: 'Full-time',
+        summary: 'Ship mobile app experiences and keep release quality high.',
+      },
+    ],
   },
   {
-    stage: 'Reviewing',
-    title: 'Step 2: Screen against scorecard',
-    detail: 'Compare experience, skills, compensation expectations, and location constraints against the scorecard.',
+    id: 'application-data',
+    title: 'Application Data',
+    subtitle: 'Required submission fields',
+    summary: 'Use this module to see what data a candidate must provide before review starts.',
+    badge: 'Data intake',
+    icon: 'data',
+    accent: 'sky',
+    description: 'A complete submission should let the reviewer understand who the candidate is, what role they want, and whether they can realistically meet the job requirements.',
+    requirements: ['Resume or profile link', 'Email and contact number', 'Target role', 'Availability', 'Portfolio or work sample when relevant', 'Compensation expectations when required'],
+    steps: [
+      'Collect the minimum submission fields before the first screening pass.',
+      'Confirm role fit, location, and compensation expectations.',
+      'Attach any supporting links or work samples that strengthen the profile.',
+      'Move the application forward only when the record is complete.',
+    ],
+    rules: ['Incomplete submissions stay in applied.', 'Missing contact details block review.', 'Role mismatch should be tagged early.'],
   },
   {
-    stage: 'Shortlisted',
-    title: 'Step 3: Prepare the interview plan',
-    detail: 'Assign interviewers, send prep notes, and decide the competency areas each interviewer owns.',
+    id: 'reviewing',
+    title: 'Reviewing',
+    subtitle: 'Screen against the scorecard',
+    summary: 'This module explains the first reviewer pass before shortlist.',
+    badge: 'Screening',
+    icon: 'review',
+    accent: 'emerald',
+    description: 'Reviewing is where you check the fit against the scorecard, compare experience depth, and decide if the candidate deserves a panel discussion.',
+    requirements: ['Technical or functional depth', 'Scorecard match', 'Compensation fit', 'Location and notice-period fit'],
+    steps: [
+      'Compare the candidate profile with the role scorecard.',
+      'Check whether the required skill bar is met.',
+      'Identify risks, blockers, and unknowns.',
+      'Recommend shortlist, hold, or reject with notes.',
+    ],
+    rules: ['No scorecard match means no shortlist.', 'High risk or poor fit can move to rejected.', 'Strong fit moves to shortlisted.'],
   },
   {
-    stage: 'Interviewed',
-    title: 'Step 4: Consolidate feedback',
-    detail: 'Collect scorecards, run a debrief, and reach a hiring decision based on evidence, not gut feel.',
+    id: 'shortlisted',
+    title: 'Shortlisted',
+    subtitle: 'Prepare the interview plan',
+    summary: 'This module explains the requirements before interviews are scheduled.',
+    badge: 'Interview prep',
+    icon: 'shortlist',
+    accent: 'violet',
+    description: 'Shortlisted candidates are strong enough for interviews. At this stage you lock the panel, schedule the session, and define the evaluation rubric.',
+    requirements: ['Panel owner', 'Interview slots', 'Interview rubric', 'Competency areas', 'Candidate prep note'],
+    steps: [
+      'Assign interviewers and competency ownership.',
+      'Schedule the candidate and share the process.',
+      'Create a structured rubric for each interviewer.',
+      'Capture scorecards immediately after the interview.',
+    ],
+    rules: ['No panel means no interview.', 'Weak prep notes delay scheduling.', 'Missing rubric blocks feedback comparison.'],
   },
   {
-    stage: 'Offered',
-    title: 'Step 5: Issue the offer',
-    detail: 'Route approvals, send the package, and track acceptance, start date, and contingencies.',
+    id: 'interviewed',
+    title: 'Interviewed',
+    subtitle: 'Consolidate feedback',
+    summary: 'Use this module to turn interview notes into a decision.',
+    badge: 'Decision review',
+    icon: 'interview',
+    accent: 'amber',
+    description: 'Interviewed candidates should have complete scorecards, feedback from every interviewer, and a debrief summary that supports an evidence-based decision.',
+    requirements: ['All scorecards submitted', 'Debrief completed', 'Strengths and concerns documented', 'Decision owner assigned'],
+    steps: [
+      'Collect interviewer scorecards.',
+      'Run a debrief to compare feedback.',
+      'Resolve disagreements and edge cases.',
+      'Choose offer or rejection based on evidence.',
+    ],
+    rules: ['No scorecards means no offer.', 'Concerns must be documented clearly.', 'A consensus is preferred but not required.'],
   },
   {
-    stage: 'Rejected',
-    title: 'Step 6: Close out professionally',
-    detail: 'Reject only when requirements are not met or interview results are weak, then record the reason clearly.',
+    id: 'offered',
+    title: 'Offered',
+    subtitle: 'Issue the offer package',
+    summary: 'This module covers approvals, compensation, and acceptance tracking.',
+    badge: 'Offer stage',
+    icon: 'offer',
+    accent: 'emerald',
+    description: 'An offer should only be sent when approvals are complete, compensation is aligned, and the start date is validated.',
+    requirements: ['Approved compensation', 'Final title and level', 'Start date', 'Offer owner', 'Candidate contact confirmed'],
+    steps: [
+      'Confirm internal approvals.',
+      'Package salary, title, and start date.',
+      'Send the offer and track acceptance.',
+      'Move to onboarding only after acceptance.',
+    ],
+    rules: ['No approval means no offer.', 'Salary mismatch must be resolved first.', 'Acceptance should be documented immediately.'],
+  },
+  {
+    id: 'rejected',
+    title: 'Rejected',
+    subtitle: 'Close out professionally',
+    summary: 'This module explains when and how to reject a candidate.',
+    badge: 'Close-out',
+    icon: 'rejection',
+    accent: 'rose',
+    description: 'Reject when the candidate does not meet the bar, the role fit is wrong, or interview feedback shows a clear mismatch. The close-out should remain professional and documented.',
+    requirements: ['Reason recorded', 'Candidate communication sent', 'Future-fit tag if relevant', 'Pipeline status updated'],
+    steps: [
+      'Document the reason for rejection.',
+      'Send a respectful close-out note.',
+      'Tag the candidate for future roles if appropriate.',
+      'Keep the pipeline clean for reporting.',
+    ],
+    rules: ['Unclear reasons should be avoided.', 'Professional language is required.', 'Future-fit candidates should remain searchable.'],
   },
 ];
 
@@ -176,6 +251,8 @@ const Dashboard = () => {
   const [selectedStage, setSelectedStage] = useState('applied');
   const [showOpenRoles, setShowOpenRoles] = useState(false);
   const [selectedRoleType, setSelectedRoleType] = useState('all');
+  const [activeModuleId, setActiveModuleId] = useState('role-selection');
+  const [selectedRole, setSelectedRole] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatuses, setSelectedStatuses] = useState([]);
 
@@ -258,14 +335,11 @@ const Dashboard = () => {
   const conversionRate = totalApplications ? Math.round((statusCount.offered / totalApplications) * 100) : 0;
   const recentApplications = filteredApplications.slice(0, 5);
   const roleTypes = ['all', ...new Set(jobs.map((job) => (job.type || 'full-time').toLowerCase()))];
-  const activeRole = useMemo(() => {
-    if (!selectedJob) return null;
-    const catalog = roleCatalog.find((role) => role.label === selectedJob.title) || roleCatalog[0];
-    return {
-      ...selectedJob,
-      roleData: catalog,
-    };
-  }, [selectedJob]);
+  const activeJob = useMemo(() => {
+    if (!selectedRole) return selectedJob;
+    const matchedJob = jobs.find((job) => job.title === selectedRole.label) || selectedJob;
+    return matchedJob || selectedJob;
+  }, [jobs, selectedJob, selectedRole]);
 
   const columns = statusColumns.map((column) => ({
     ...column,
@@ -376,28 +450,17 @@ const Dashboard = () => {
               onSearch={(term) => setSearchTerm(term)}
               onStatusFilter={(statuses) => setSelectedStatuses(statuses)}
             />
-            <div className="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-4">
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div>
-                  <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">Role selection</p>
-                  <p className="mt-2 text-sm text-slate-400">Choose a role family and use the cards below to understand the title, level, data requirements, and engagement type.</p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {roleTypes.map((type) => (
-                    <button
-                      key={type}
-                      type="button"
-                      onClick={() => setSelectedRoleType(type)}
-                      className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition ${selectedRoleType === type ? 'bg-cyan-500 text-slate-950' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
-                    >
-                      {type === 'all' ? 'All roles' : type.replace('-', ' ')}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <WorkflowModuleExplorer
+              modules={workflowModules}
+              activeModuleId={activeModuleId}
+              onSelectModule={setActiveModuleId}
+              selectedRoleType={selectedRoleType}
+              onSelectRoleType={setSelectedRoleType}
+              selectedRole={selectedRole}
+              onSelectRole={setSelectedRole}
+            />
             <div className="grid gap-6 xl:grid-cols-[1.3fr_0.9fr]">
-              <JobPreviewCard job={activeRole} />
+              <JobPreviewCard job={activeJob} />
               <PipelineStageTabs stages={stageDefinitions} selectedStage={selectedStage} onSelect={setSelectedStage} />
             </div>
           </div>
@@ -405,23 +468,6 @@ const Dashboard = () => {
 
         <div className="mt-8 grid gap-6 xl:grid-cols-[1.4fr_0.9fr]">
           <section className="space-y-6">
-            <div className="rounded-[2rem] border border-slate-800 bg-slate-900/95 p-6 shadow-2xl shadow-slate-950/20">
-              <SectionHeader
-                eyebrow="Hiring playbook"
-                title="How candidates move from application to offer or rejection"
-                description="This is the operating model for reviewing, shortlisting, interviewing, offering, and rejecting candidates with a consistent bar."
-                badge="Professional workflow"
-              />
-              <div className="mt-6 grid gap-4 lg:grid-cols-2">
-                {hiringPlaybook.map((step) => (
-                  <div key={step.stage} className="rounded-[1.5rem] bg-slate-950/80 p-5 ring-1 ring-white/5">
-                    <p className="text-xs uppercase tracking-[0.3em] text-cyan-300">{step.stage}</p>
-                    <h3 className="mt-3 text-lg font-semibold text-white">{step.title}</h3>
-                    <p className="mt-3 text-sm leading-6 text-slate-400">{step.detail}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
             <div className="rounded-[2rem] border border-slate-800 bg-slate-900/95 p-6 shadow-2xl shadow-slate-950/20">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
