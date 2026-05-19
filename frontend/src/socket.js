@@ -1,27 +1,27 @@
-import { io } from 'socket.io-client';
-
-const BACKEND_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
-
-const socket = io(BACKEND_URL, {
-  autoConnect: false,
-  auth: {
-    token: localStorage.getItem('ats_token'),
+const noopSocket = {
+  connected: false,
+  auth: { token: localStorage.getItem('ats_token') },
+  on() {
+    return noopSocket;
   },
-  transports: ['websocket'],
-});
-
-export const connectSocket = () => {
-  if (!socket.connected) {
-    socket.auth = { token: localStorage.getItem('ats_token') };
-    socket.connect();
-  }
-  return socket;
+  off() {
+    return noopSocket;
+  },
+  emit() {
+    return noopSocket;
+  },
+  connect() {
+    noopSocket.connected = true;
+    return noopSocket;
+  },
+  disconnect() {
+    noopSocket.connected = false;
+    return noopSocket;
+  },
 };
 
-export const disconnectSocket = () => {
-  if (socket.connected) {
-    socket.disconnect();
-  }
-};
+export const connectSocket = () => noopSocket;
+export const disconnectSocket = () => noopSocket.disconnect();
+export const emitSocketEvent = () => noopSocket;
 
-export default socket;
+export default noopSocket;

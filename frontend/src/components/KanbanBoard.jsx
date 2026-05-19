@@ -73,7 +73,14 @@ const KanbanBoard = ({ columns }) => {
                           <div className="flex items-start justify-between gap-3">
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2">
-                                <GripHorizontal size={14} className="text-slate-600 flex-shrink-0" {...dragProvided.dragHandleProps} />
+                                <button
+                                  type="button"
+                                  aria-label="Drag candidate"
+                                  className="flex-shrink-0 rounded-full p-1 text-slate-600 transition hover:bg-slate-800 hover:text-slate-300"
+                                  {...dragProvided.dragHandleProps}
+                                >
+                                  <GripHorizontal size={14} />
+                                </button>
                                 <h5 className="text-base font-bold text-slate-100 truncate">{application.applicant?.name || 'Candidate'}</h5>
                               </div>
                               <p className="mt-1 text-xs text-slate-400 line-clamp-2">{application.job?.title || 'Role'} • {application.job?.company || 'Company'}</p>

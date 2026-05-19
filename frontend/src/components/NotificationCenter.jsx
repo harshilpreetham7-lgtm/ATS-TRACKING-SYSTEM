@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react';
 import { X, Bell, CheckCircle, AlertCircle, Info } from 'lucide-react';
+import { useAppStore } from '../store/useAppStore';
 
-const NotificationCenter = ({ notifications = [] }) => {
+const NotificationCenter = () => {
+  const notifications = useAppStore((state) => state.notifications);
+  const dismissNotification = useAppStore((state) => state.dismissNotification);
   const [displayedNotifications, setDisplayedNotifications] = useState([]);
 
   useEffect(() => {
-    if (notifications.length > 0) {
-      setDisplayedNotifications((prev) => [...prev, notifications[0]]);
-      const timer = setTimeout(() => {
-        setDisplayedNotifications((prev) => prev.slice(1));
-      }, 4000);
-      return () => clearTimeout(timer);
-    }
+    setDisplayedNotifications(notifications);
   }, [notifications]);
 
   const getIcon = (type) => {
@@ -55,9 +52,9 @@ const NotificationCenter = ({ notifications = [] }) => {
 
   return (
     <div className="fixed bottom-6 right-6 z-50 space-y-3 max-w-md">
-      {displayedNotifications.map((notif, idx) => (
+      {displayedNotifications.map((notif) => (
         <div
-          key={idx}
+          key={notif.id}
           className={`animate-slide-in rounded-[1.5rem] border p-4 backdrop-blur-lg shadow-2xl shadow-slate-950/30 ${getBackgroundColor(
             notif.type
           )} ${getTextColor(notif.type)} flex items-center gap-4 group`}
@@ -70,7 +67,7 @@ const NotificationCenter = ({ notifications = [] }) => {
           <button
             type="button"
             className="flex-shrink-0 opacity-50 hover:opacity-100 transition"
-            onClick={() => setDisplayedNotifications((prev) => prev.filter((_, i) => i !== idx))}
+            onClick={() => dismissNotification(notif.id)}
           >
             <X className="h-4 w-4" />
           </button>

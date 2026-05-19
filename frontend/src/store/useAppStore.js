@@ -10,10 +10,30 @@ export const useAppStore = create((set, get) => ({
   user: initialUser,
   jobs: [],
   applications: [],
+  notifications: [],
   loading: false,
   error: null,
   setLoading: (loading) => set({ loading }),
   setError: (error) => set({ error }),
+  pushNotification: (notification) => {
+    const id = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    set((state) => ({
+      notifications: [
+        {
+          id,
+          type: 'info',
+          title: '',
+          message: '',
+          ...notification,
+        },
+        ...state.notifications,
+      ].slice(0, 6),
+    }));
+    return id;
+  },
+  dismissNotification: (id) => {
+    set((state) => ({ notifications: state.notifications.filter((item) => item.id !== id) }));
+  },
   setUser: (user) => {
     localStorage.setItem('ats_user', JSON.stringify(user));
     set({ user });
@@ -25,7 +45,7 @@ export const useAppStore = create((set, get) => ({
   logout: () => {
     setAuthToken('');
     localStorage.removeItem('ats_user');
-    set({ token: '', user: null, jobs: [], applications: [] });
+    set({ token: '', user: null, jobs: [], applications: [], notifications: [] });
     disconnectSocket();
   },
   register: async (payload) => {
@@ -68,9 +88,19 @@ export const useAppStore = create((set, get) => ({
         api.get('/applications/my'),
       ]);
       set({ jobs: jobsRes.data, applications: appsRes.data });
+      get().pushNotification({
+        type: 'success',
+        title: 'Board synced',
+        message: `Loaded ${jobsRes.data.length} roles and ${appsRes.data.length} candidates.`,
+      });
       return true;
     } catch (error) {
       set({ error: error.response?.data?.message || error.message });
+      get().pushNotification({
+        type: 'error',
+        title: 'Board sync failed',
+        message: error.response?.data?.message || error.message,
+      });
       return false;
     } finally {
       set({ loading: false });
@@ -85,9 +115,19 @@ export const useAppStore = create((set, get) => ({
           app._id === applicationId ? response.data : app
         ),
       }));
+      get().pushNotification({
+        type: 'info',
+        title: 'Application updated',
+        message: `Moved application ${applicationId} to ${status}.`,
+      });
       return true;
     } catch (error) {
       set({ error: error.response?.data?.message || error.message });
+      get().pushNotification({
+        type: 'error',
+        title: 'Status update failed',
+        message: error.response?.data?.message || error.message,
+      });
       return false;
     } finally {
       set({ loading: false });
