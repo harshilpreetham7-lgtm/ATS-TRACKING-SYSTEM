@@ -133,6 +133,17 @@ const workflowModules = [
         summary: 'Ship mobile app experiences and keep release quality high.',
       },
     ],
+    formTitle: 'Role details to collect',
+    fields: [
+      { name: 'roleTitle', label: 'Role title', placeholder: 'Frontend Engineer', defaultValue: 'Frontend Engineer' },
+      { name: 'department', label: 'Department', placeholder: 'Product Engineering', defaultValue: 'Product Engineering' },
+      { name: 'engagement', label: 'Engagement', type: 'select', options: ['Full-time', 'Part-time'], defaultValue: 'Full-time' },
+      { name: 'level', label: 'Level', type: 'select', options: ['Associate', 'Mid', 'Mid to Senior', 'Senior'], defaultValue: 'Mid to Senior' },
+      { name: 'location', label: 'Location', placeholder: 'Remote or San Francisco' },
+      { name: 'salary', label: 'Salary range', placeholder: '$90k - $140k' },
+      { name: 'skills', label: 'Required skills', placeholder: 'React, TypeScript, Accessibility', span: 2 },
+      { name: 'summary', label: 'Role summary', type: 'textarea', rows: 4, placeholder: 'Describe the responsibilities, outcomes, and expectations for this role.', span: 2 },
+    ],
   },
   {
     id: 'application-data',
@@ -151,6 +162,15 @@ const workflowModules = [
       'Move the application forward only when the record is complete.',
     ],
     rules: ['Incomplete submissions stay in applied.', 'Missing contact details block review.', 'Role mismatch should be tagged early.'],
+    formTitle: 'Candidate details to request',
+    fields: [
+      { name: 'candidateName', label: 'Candidate name', placeholder: 'Enter candidate name' },
+      { name: 'email', label: 'Email address', placeholder: 'name@example.com' },
+      { name: 'phone', label: 'Phone number', placeholder: '+1 555 000 0000' },
+      { name: 'portfolio', label: 'Portfolio or profile link', placeholder: 'https://...' },
+      { name: 'availability', label: 'Availability', type: 'select', options: ['Immediately', '2 weeks', '1 month', 'Later'] },
+      { name: 'note', label: 'Submission note', type: 'textarea', rows: 4, placeholder: 'What should the reviewer know before they screen this profile?', span: 2 },
+    ],
   },
   {
     id: 'reviewing',
@@ -169,6 +189,13 @@ const workflowModules = [
       'Recommend shortlist, hold, or reject with notes.',
     ],
     rules: ['No scorecard match means no shortlist.', 'High risk or poor fit can move to rejected.', 'Strong fit moves to shortlisted.'],
+    formTitle: 'Review inputs to capture',
+    fields: [
+      { name: 'fitScore', label: 'Fit score', placeholder: 'e.g. 8.5 / 10' },
+      { name: 'reviewStatus', label: 'Review result', type: 'select', options: ['Hold', 'Shortlist', 'Reject'] },
+      { name: 'screeningNotes', label: 'Screening notes', type: 'textarea', rows: 4, placeholder: 'Summarize strengths, gaps, and concerns.', span: 2 },
+      { name: 'compensation', label: 'Compensation fit', placeholder: 'Matches / Needs discussion' },
+    ],
   },
   {
     id: 'shortlisted',
@@ -187,6 +214,13 @@ const workflowModules = [
       'Capture scorecards immediately after the interview.',
     ],
     rules: ['No panel means no interview.', 'Weak prep notes delay scheduling.', 'Missing rubric blocks feedback comparison.'],
+    formTitle: 'Interview setup details',
+    fields: [
+      { name: 'panelOwner', label: 'Panel owner', placeholder: 'Name of the interviewer owner' },
+      { name: 'interviewDate', label: 'Interview date', type: 'date' },
+      { name: 'interviewType', label: 'Interview type', type: 'select', options: ['Phone screen', 'Technical', 'Portfolio review', 'Behavioral'] },
+      { name: 'prepNote', label: 'Candidate prep note', type: 'textarea', rows: 4, placeholder: 'What should the candidate prepare before the interview?', span: 2 },
+    ],
   },
   {
     id: 'interviewed',
@@ -205,6 +239,13 @@ const workflowModules = [
       'Choose offer or rejection based on evidence.',
     ],
     rules: ['No scorecards means no offer.', 'Concerns must be documented clearly.', 'A consensus is preferred but not required.'],
+    formTitle: 'Interview decision details',
+    fields: [
+      { name: 'scorecardSummary', label: 'Scorecard summary', type: 'textarea', rows: 4, placeholder: 'Summarize the strongest and weakest signals.', span: 2 },
+      { name: 'decision', label: 'Decision', type: 'select', options: ['Offer', 'Hold', 'Reject'] },
+      { name: 'concerns', label: 'Open concerns', placeholder: 'Any unresolved questions or risks' },
+      { name: 'nextStep', label: 'Next step', placeholder: 'Offer approval, follow-up, or close-out' },
+    ],
   },
   {
     id: 'offered',
@@ -223,6 +264,14 @@ const workflowModules = [
       'Move to onboarding only after acceptance.',
     ],
     rules: ['No approval means no offer.', 'Salary mismatch must be resolved first.', 'Acceptance should be documented immediately.'],
+    formTitle: 'Offer package details',
+    fields: [
+      { name: 'offerTitle', label: 'Offer title', placeholder: 'Frontend Engineer' },
+      { name: 'offerSalary', label: 'Offer salary', placeholder: '$120k + benefits' },
+      { name: 'startDate', label: 'Start date', type: 'date' },
+      { name: 'approval', label: 'Approval status', type: 'select', options: ['Pending', 'Approved', 'Sent'] },
+      { name: 'offerNote', label: 'Offer note', type: 'textarea', rows: 4, placeholder: 'Add approval notes or candidate context.', span: 2 },
+    ],
   },
   {
     id: 'rejected',
@@ -241,6 +290,12 @@ const workflowModules = [
       'Keep the pipeline clean for reporting.',
     ],
     rules: ['Unclear reasons should be avoided.', 'Professional language is required.', 'Future-fit candidates should remain searchable.'],
+    formTitle: 'Rejection details',
+    fields: [
+      { name: 'rejectionReason', label: 'Rejection reason', type: 'select', options: ['Role mismatch', 'Skill gap', 'Interview concerns', 'Compensation mismatch', 'Other'] },
+      { name: 'futureFit', label: 'Future fit', type: 'select', options: ['Yes', 'No', 'Maybe later'] },
+      { name: 'closeOutNote', label: 'Close-out note', type: 'textarea', rows: 4, placeholder: 'Write the professional rejection note.', span: 2 },
+    ],
   },
 ];
 
@@ -336,9 +391,17 @@ const Dashboard = () => {
   const recentApplications = filteredApplications.slice(0, 5);
   const roleTypes = ['all', ...new Set(jobs.map((job) => (job.type || 'full-time').toLowerCase()))];
   const activeJob = useMemo(() => {
-    if (!selectedRole) return selectedJob;
-    const matchedJob = jobs.find((job) => job.title === selectedRole.label) || selectedJob;
-    return matchedJob || selectedJob;
+    if (selectedRole) {
+      const matchedJob = jobs.find((job) => job.title === selectedRole.label);
+      return {
+        ...(matchedJob || selectedJob || {}),
+        title: selectedRole.label,
+        type: selectedRole.engagement,
+        description: selectedRole.summary,
+        roleData: selectedRole,
+      };
+    }
+    return selectedJob;
   }, [jobs, selectedJob, selectedRole]);
 
   const columns = statusColumns.map((column) => ({

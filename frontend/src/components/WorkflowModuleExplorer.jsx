@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChevronRight, CheckCircle2, Clock, FileText, Briefcase, Users, PenTool, BadgeCheck, XCircle } from 'lucide-react';
 
 const iconMap = {
@@ -22,8 +22,21 @@ const accentMap = {
 };
 
 const WorkflowModuleExplorer = ({ modules, activeModuleId, onSelectModule, selectedRoleType, onSelectRoleType, selectedRole, onSelectRole }) => {
+  const [formValues, setFormValues] = useState({});
   const activeModule = modules.find((module) => module.id === activeModuleId) || modules[0];
   const ActiveIcon = iconMap[activeModule.icon] || Briefcase;
+
+  useEffect(() => {
+    const nextValues = {};
+    (activeModule.fields || []).forEach((field) => {
+      nextValues[field.name] = field.defaultValue || '';
+    });
+    setFormValues(nextValues);
+  }, [activeModuleId]);
+
+  const updateField = (name, value) => {
+    setFormValues((current) => ({ ...current, [name]: value }));
+  };
 
   return (
     <div className="rounded-[2rem] border border-slate-800 bg-slate-950/95 p-6 shadow-2xl shadow-slate-950/20">
@@ -168,6 +181,51 @@ const WorkflowModuleExplorer = ({ modules, activeModuleId, onSelectModule, selec
               </div>
             </div>
           )}
+
+          <div className="mt-5 rounded-[1.5rem] bg-slate-950/80 p-4 ring-1 ring-white/5">
+            <p className="text-xs uppercase tracking-[0.24em] text-cyan-300">{activeModule.formTitle || 'Details required'}</p>
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
+              {(activeModule.fields || []).map((field) => (
+                <label key={field.name} className={`space-y-2 ${field.span === 2 ? 'md:col-span-2' : ''}`}>
+                  <span className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{field.label}</span>
+                  {field.type === 'select' ? (
+                    <select
+                      value={formValues[field.name] || ''}
+                      onChange={(event) => updateField(field.name, event.target.value)}
+                      className="w-full rounded-3xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-500"
+                    >
+                      <option value="">Select one</option>
+                      {field.options?.map((option) => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
+                    </select>
+                  ) : field.type === 'textarea' ? (
+                    <textarea
+                      rows={field.rows || 4}
+                      value={formValues[field.name] || ''}
+                      onChange={(event) => updateField(field.name, event.target.value)}
+                      placeholder={field.placeholder}
+                      className="w-full rounded-3xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-cyan-500"
+                    />
+                  ) : (
+                    <input
+                      type={field.type || 'text'}
+                      value={formValues[field.name] || ''}
+                      onChange={(event) => updateField(field.name, event.target.value)}
+                      placeholder={field.placeholder}
+                      className="w-full rounded-3xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-cyan-500"
+                    />
+                  )}
+                </label>
+              ))}
+            </div>
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+              <p className="text-sm text-slate-400">Fill these fields to complete the current module before moving the candidate forward.</p>
+              <button type="button" className="rounded-full bg-gradient-to-r from-cyan-500 to-sky-500 px-5 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:from-cyan-400 hover:to-sky-400">
+                Save module details
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
