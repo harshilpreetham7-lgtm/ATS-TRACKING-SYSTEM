@@ -1,0 +1,153 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppStore } from '../store/useAppStore';
+
+const LoginPage = () => {
+  const navigate = useNavigate();
+  const { login, register, user, error, loading, token } = useAppStore();
+  const [mode, setMode] = useState('login');
+  const [form, setForm] = useState({ name: '', email: '', password: '', role: 'candidate' });
+
+  useEffect(() => {
+    if (token && user) {
+      navigate('/dashboard');
+    }
+  }, [token, user, navigate]);
+
+  const handleChange = (event) => {
+    setForm({ ...form, [event.target.name]: event.target.value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const payload = {
+      email: form.email,
+      password: form.password,
+      name: form.name,
+      role: form.role,
+      company: form.role === 'recruiter' ? form.company || 'ATS Team' : undefined,
+    };
+    const success = mode === 'login' ? await login(payload) : await register(payload);
+    if (success) {
+      navigate('/dashboard');
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-100">
+      <div className="mx-auto grid min-h-screen max-w-7xl grid-cols-1 items-center gap-10 px-4 py-10 lg:grid-cols-[1.4fr_1fr]">
+        <section className="relative rounded-[2rem] border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-slate-950/40 backdrop-blur-lg lg:p-12 overflow-hidden">
+          <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-gradient-to-br from-cyan-600/20 to-violet-600/10 blur-3xl animate-float" />
+          <div className="inline-flex rounded-full bg-cyan-500/10 px-4 py-2 text-sm font-semibold text-cyan-300 ring-1 ring-cyan-500/20">
+            Built for modern recruiting teams
+          </div>
+          <h1 className="mt-8 text-4xl font-black tracking-tight text-white sm:text-5xl">
+            Real-time hiring intelligence that recruiters love.
+          </h1>
+          <p className="mt-6 max-w-xl text-slate-400 sm:text-lg">
+            Manage pipelines, move candidates instantly, and surface the right hires with a premium ATS experience designed to impress HR teams.
+          </p>
+
+          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-5 shadow-lg shadow-slate-950/20">
+              <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Live Collaboration</p>
+              <p className="mt-3 text-lg font-semibold text-white">Instant status updates across your team.</p>
+            </div>
+            <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-5 shadow-lg shadow-slate-950/20">
+              <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Smart Pipeline</p>
+              <p className="mt-3 text-lg font-semibold text-white">AI-ready workflow with easy drag-and-drop actions.</p>
+            </div>
+          </div>
+
+          <div className="mt-10 rounded-3xl bg-slate-800/80 p-6 ring-1 ring-white/10">
+            <p className="text-sm uppercase tracking-[0.24em] text-cyan-300">Why this ATS stands out</p>
+            <ul className="mt-5 space-y-3 text-slate-400">
+              <li>• Visual hiring pipeline for every role.</li>
+              <li>• Real-time candidate updates and notifications.</li>
+              <li>• Clean recruiter-first dashboard and job insights.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section className="rounded-[2rem] border border-slate-800 bg-slate-900/95 p-8 shadow-2xl shadow-slate-950/40 backdrop-blur-lg lg:p-10 relative">
+          <div className="mb-8 flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm text-slate-400">{mode === 'login' ? 'Sign in to your team portal' : 'Create a recruiter account'}</p>
+              <h2 className="mt-2 text-3xl font-semibold text-white">{mode === 'login' ? 'Welcome back' : 'Get started'}</h2>
+            </div>
+            <div className="rounded-3xl bg-slate-950/90 px-3 py-2 text-xs font-semibold uppercase tracking-[0.26em] text-cyan-300 ring-1 ring-cyan-500/20">
+              {mode === 'login' ? 'Secure login' : 'Fast onboarding'}
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
+            {mode === 'register' && (
+              <div>
+                <label className="text-sm font-medium text-slate-300">Full name</label>
+                <input
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+                  className="mt-3 w-full rounded-3xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-cyan-500"
+                />
+              </div>
+            )}
+            <div>
+              <label className="text-sm font-medium text-slate-300">Email address</label>
+              <input
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                type="email"
+                required
+                className="mt-3 w-full rounded-3xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-cyan-500"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-slate-300">Password</label>
+              <input
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                type="password"
+                required
+                className="mt-3 w-full rounded-3xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-cyan-500"
+              />
+            </div>
+            {mode === 'register' && (
+              <div>
+                <label className="text-sm font-medium text-slate-300">Role</label>
+                <select
+                  name="role"
+                  value={form.role}
+                  onChange={handleChange}
+                  className="mt-3 w-full rounded-3xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition focus:border-cyan-500"
+                >
+                  <option value="candidate">Candidate</option>
+                  <option value="recruiter">Recruiter</option>
+                </select>
+              </div>
+            )}
+            {error && <p className="text-sm text-rose-400">{error}</p>}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-3xl bg-gradient-to-r from-cyan-500 to-sky-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-slate-950 shadow-xl shadow-cyan-500/10 transition hover:from-cyan-400 hover:to-sky-400"
+            >
+              {loading ? 'Working...' : mode === 'login' ? 'Login' : 'Create account'}
+            </button>
+          </form>
+
+          <div className="mt-8 border-t border-slate-800 pt-6 text-center text-sm text-slate-500">
+            <button type="button" onClick={() => setMode(mode === 'login' ? 'register' : 'login')} className="font-semibold text-white hover:text-cyan-300">
+              {mode === 'login' ? 'Create a recruiter account' : 'Already have an account? Login'}
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default LoginPage;
