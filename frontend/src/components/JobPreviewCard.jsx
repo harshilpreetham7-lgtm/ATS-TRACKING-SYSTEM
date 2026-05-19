@@ -11,6 +11,8 @@ const JobPreviewCard = ({ job }) => {
     skills: ['React', 'JavaScript', 'API integration'],
     submit: ['Resume', 'Contact details', 'Portfolio link', 'Availability'],
   };
+  const skills = Array.isArray(roleData.skills) ? roleData.skills : ['React', 'JavaScript', 'API integration'];
+  const submit = Array.isArray(roleData.submit) ? roleData.submit : ['Resume', 'Contact details', 'Portfolio link', 'Availability'];
 
   return (
     <div className="rounded-[2rem] border border-slate-800 bg-slate-950/90 p-6 shadow-2xl shadow-slate-950/20">
@@ -34,14 +36,14 @@ const JobPreviewCard = ({ job }) => {
             </div>
             <div className="rounded-3xl bg-slate-900/80 p-4 ring-1 ring-white/10">
               <p className="text-xs uppercase tracking-[0.26em] text-slate-400">Top skills</p>
-              <p className="mt-3 text-sm text-slate-200">{roleData.skills.join(' • ')}</p>
+              <p className="mt-3 text-sm text-slate-200">{skills.join(' • ')}</p>
             </div>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="rounded-3xl bg-slate-900/80 p-4 ring-1 ring-white/10">
               <p className="text-xs uppercase tracking-[0.26em] text-slate-400">What to submit</p>
               <ul className="mt-3 space-y-2 text-sm text-slate-200">
-                {roleData.submit.map((item) => (
+                {submit.map((item) => (
                   <li key={item} className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />{item}</li>
                 ))}
               </ul>
