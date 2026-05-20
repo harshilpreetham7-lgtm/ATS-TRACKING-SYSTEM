@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAppStore } from './store/useAppStore';
+import HomePage from './components/HomePage';
 import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
+import WorkflowWorkspacePage from './pages/WorkflowWorkspacePage';
 import ErrorBoundary from './components/ErrorBoundary';
 import NotificationCenter from './components/NotificationCenter';
 import './App.css';
@@ -19,7 +21,11 @@ function App() {
             path="/dashboard"
             element={token ? <Dashboard /> : <Navigate replace to="/login" />}
           />
-          <Route path="/" element={<Navigate replace to={token ? '/dashboard' : '/login'} />} />
+          <Route
+            path="/workflow"
+            element={token ? <WorkflowWorkspacePage /> : <Navigate replace to="/login" />}
+          />
+          <Route path="/" element={<HomePage />} />
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </ErrorBoundary>

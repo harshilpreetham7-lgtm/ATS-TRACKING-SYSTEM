@@ -29,6 +29,7 @@ const WorkflowModuleExplorer = ({
   onSelectRoleType,
   selectedRole,
   onSelectRole,
+  mode = 'overlay',
 }) => {
   const [formValues, setFormValues] = useState({});
   const activeModule = modules.find((module) => module.id === activeModuleId) || modules[0];
@@ -37,17 +38,25 @@ const WorkflowModuleExplorer = ({
   useEffect(() => {
     const nextValues = {};
     (activeModule.fields || []).forEach((field) => {
-      nextValues[field.name] = field.defaultValue || '';
+      // Prefill from field default, but override from selectedRole when available
+      let value = field.defaultValue || '';
+      if (selectedRole) {
+        if (field.name === 'roleTitle') value = selectedRole.label || value;
+        if (field.name === 'level') value = selectedRole.level || value;
+        if (field.name === 'engagement') value = selectedRole.engagement || value;
+        if (field.name === 'summary') value = selectedRole.summary || value;
+      }
+      nextValues[field.name] = value;
     });
     setFormValues(nextValues);
-  }, [activeModuleId]);
+  }, [activeModuleId, selectedRole]);
 
   const updateField = (name, value) => {
     setFormValues((current) => ({ ...current, [name]: value }));
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/95 backdrop-blur-xl">
+    <div className={mode === 'page' ? 'relative overflow-y-auto bg-slate-950' : 'fixed inset-0 z-50 overflow-y-auto bg-slate-950/95 backdrop-blur-xl'}>
       <div className="mx-auto flex min-h-screen max-w-[1600px] flex-col px-4 py-6 sm:px-6 lg:px-8">
         <div className="rounded-[2rem] border border-slate-800 bg-slate-950/95 p-6 shadow-2xl shadow-slate-950/20">
           <div className="flex flex-wrap items-end justify-between gap-4">
