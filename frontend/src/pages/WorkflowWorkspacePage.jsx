@@ -25,7 +25,7 @@ const WorkflowWorkspacePage = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
-      <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-4 pt-6 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-4 pt-4 sm:px-6 lg:px-8 lg:pt-5">
         <button
           type="button"
           onClick={() => navigate('/dashboard')}

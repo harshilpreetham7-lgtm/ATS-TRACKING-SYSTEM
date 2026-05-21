@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Activity, Zap } from 'lucide-react';
 
 const NavBar = ({ user, onLogout, onSync }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [isOnline, setIsOnline] = useState(true);
   const [isSyncing, setIsSyncing] = useState(false);
+  const navItems = [
+    { label: 'Overview', path: '/dashboard' },
+    { label: 'Roles', path: '/roles' },
+    { label: 'Pipeline', path: '/pipeline' },
+    { label: 'Workflow', path: '/workflow' },
+  ];
 
   const handleSync = async () => {
     setIsSyncing(true);
@@ -28,8 +37,8 @@ const NavBar = ({ user, onLogout, onSync }) => {
   }, []);
 
   return (
-    <div className="sticky top-0 z-30 border-b border-slate-800/50 bg-gradient-to-r from-slate-950/95 via-slate-950/90 to-slate-950/95 shadow-sm shadow-slate-950/20 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+    <div className="sticky top-0 z-30 border-b border-slate-800/50 bg-gradient-to-r from-slate-950/98 via-slate-950/95 to-slate-950/98 shadow-sm shadow-slate-950/20 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex-1">
           <div className="flex items-center gap-2">
             <div className="h-3 w-3 rounded-full bg-green-500 animate-pulse shadow-lg shadow-green-500/50" />
@@ -41,6 +50,21 @@ const NavBar = ({ user, onLogout, onSync }) => {
             <span className="text-slate-600">•</span>
             <p className="flex items-center gap-1">👤 <span className="text-slate-300">{user?.name || 'Guest'}</span></p>
             {isOnline && <span className="flex items-center gap-1 text-green-400"><Activity size={12} /> Connected</span>}
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {navItems.map((item) => {
+              const active = location.pathname === item.path;
+              return (
+                <button
+                  key={item.path}
+                  type="button"
+                  onClick={() => navigate(item.path)}
+                  className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition ${active ? 'bg-cyan-500 text-slate-950' : 'bg-slate-900/80 text-slate-300 ring-1 ring-white/10 hover:bg-slate-800 hover:text-cyan-300'}`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
           </div>
         </div>
 

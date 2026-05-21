@@ -1,16 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DragDropContext } from 'react-beautiful-dnd';
 import { useAppStore } from '../store/useAppStore';
 import { connectSocket, disconnectSocket } from '../socket';
-import { TrendingUp, Clock, CheckCircle, AlertCircle, Zap, Briefcase, GraduationCap, ShieldCheck, Users, Laptop, Code2, Workflow } from 'lucide-react';
+import { TrendingUp, Clock, CheckCircle, AlertCircle, Briefcase, GraduationCap, ShieldCheck, Users, Laptop, Code2, Workflow, ArrowRight } from 'lucide-react';
 import NavBar from '../components/NavBar';
-import KanbanBoard from '../components/KanbanBoard';
 import SummaryCard from '../components/SummaryCard';
 import SectionHeader from '../components/SectionHeader';
-import JobPreviewCard from '../components/JobPreviewCard';
-import PipelineStageTabs from '../components/PipelineStageTabs';
-import SearchFilter from '../components/SearchFilter';
 import { workflowModules } from '../data/workflowModules';
 
 const statusColumns = [
@@ -77,10 +72,6 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { token, user, loadBoard, applications, updateApplicationStatus, logout, jobs } = useAppStore();
   const [selectedJob, setSelectedJob] = useState(null);
-  const [selectedStage, setSelectedStage] = useState('applied');
-  const [showOpenRoles, setShowOpenRoles] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedStatuses, setSelectedStatuses] = useState([]);
 
   useEffect(() => {
     if (!token) {
@@ -133,17 +124,7 @@ const Dashboard = () => {
   const totalApplications = applications.length;
   const totalJobs = jobs.length;
 
-  const filteredApplications = useMemo(() => {
-    const term = searchTerm.trim().toLowerCase();
-    return applications.filter((app) => {
-      if (selectedStatuses.length && !selectedStatuses.includes(app.status)) return false;
-      if (!term) return true;
-      const name = (app.applicant?.name || '').toLowerCase();
-      const email = (app.applicant?.email || '').toLowerCase();
-      const jobTitle = (app.job?.title || '').toLowerCase();
-      return name.includes(term) || email.includes(term) || jobTitle.includes(term);
-    });
-  }, [applications, searchTerm, selectedStatuses]);
+  const recentApplications = applications.slice(0, 4);
   const statusCount = useMemo(() => {
     return applications.reduce(
       (acc, app) => {
@@ -155,187 +136,89 @@ const Dashboard = () => {
   }, [applications]);
 
   const conversionRate = totalApplications ? Math.round((statusCount.offered / totalApplications) * 100) : 0;
-  const recentApplications = filteredApplications.slice(0, 5);
-  const roleTypes = ['all', ...new Set(jobs.map((job) => (job.type || 'full-time').toLowerCase()))];
   const activeJob = selectedJob || jobs[0] || null;
-
-  const columns = statusColumns.map((column) => ({
-    ...column,
-    items: filteredApplications.filter((app) => app.status === column.id),
-  }));
 
   const handleSync = async () => {
     await loadBoard();
   };
 
-  const handleDragEnd = async (result) => {
-    if (!result.destination) return;
-    const { source, destination, draggableId } = result;
-    if (source.droppableId === destination.droppableId) return;
-
-    const newStatus = destination.droppableId;
-    await updateApplicationStatus(draggableId, newStatus);
-  };
-
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <NavBar user={user} onLogout={logout} onSync={handleSync} />
-      <main className="mx-auto max-w-7xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
-        <section className="overflow-hidden rounded-[2rem] bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 p-8 shadow-2xl shadow-slate-950/30 ring-1 ring-white/5">
+      <main className="mx-auto max-w-[1440px] px-4 pb-10 pt-4 sm:px-6 lg:px-8 lg:pb-12 lg:pt-5">
+        <section className="overflow-hidden rounded-[2rem] border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 p-6 shadow-2xl shadow-slate-950/30 ring-1 ring-white/5 lg:p-7">
           <SectionHeader
             eyebrow="Live hiring intelligence"
-            title="A premium ATS experience that looks modern and moves fast."
-            description="Review pipeline health, highlight top roles, and keep every hiring stakeholder aligned with every move."
+            title="A premium ATS experience with separate pages for every workflow."
+            description="Use the overview for quick actions, open the roles page for role details, and move into the pipeline or workflow pages when you need depth."
             badge="Real-time overview"
           />
-          <div className="mt-8 grid gap-5 xl:grid-cols-[1.2fr_0.9fr]">
-            <div className="grid gap-5 sm:grid-cols-2">
+          <div className="mt-6 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+            <div className="grid gap-4 sm:grid-cols-2">
               <SummaryCard
                 title="Open roles"
                 value={totalJobs}
-                subtitle="Click to reveal every available role in the current hiring pipeline."
-                onClick={() => {
-                  setSelectedJob(jobs[0] || null);
-                  setShowOpenRoles(true);
-                }}
-                active={showOpenRoles}
+                subtitle="Browse the roles page for a cleaner catalog and detailed role requirements."
+                onClick={() => navigate('/roles')}
+                active={false}
               />
               <SummaryCard
                 title="Live pipeline"
                 value={totalApplications}
-                subtitle="Track candidate movement instantly and surface the current hiring momentum."
-                onClick={() => {
-                  setSelectedStage('applied');
-                  setShowOpenRoles(false);
-                }}
-                active={selectedStage === 'applied' && !showOpenRoles}
+                subtitle="Move into the pipeline page to see each stage in a focused workspace."
+                onClick={() => navigate('/pipeline')}
+                active={false}
               />
             </div>
-            <div className="grid gap-5 sm:grid-cols-2">
-              <SummaryCard
-                title="Offer conversion"
-                value={`${conversionRate}%`}
-                subtitle="Shows the ratio of offers made from the current pipeline."
-              />
-              <SummaryCard
-                title="Shortlisted"
-                value={statusCount.shortlisted}
-                subtitle="Highlight the most promising candidates moving toward interviews."
-              />
-            </div>
-          </div>
-          {showOpenRoles && (
-            <div className="mt-8 rounded-[2rem] border border-slate-800 bg-slate-900/95 p-6 shadow-2xl shadow-slate-950/20">
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div>
-                  <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">Open roles</p>
-                  <h3 className="mt-2 text-2xl font-semibold text-white">Available roles in the hiring pipeline</h3>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setShowOpenRoles(false)}
-                  className="rounded-full bg-slate-950/80 px-4 py-2 text-sm text-slate-300 ring-1 ring-white/10 transition hover:bg-slate-900"
-                >
-                  Hide roles
-                </button>
-              </div>
-              <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {jobs.length ? jobs.map((job) => (
-                  <div key={job._id} className="rounded-[1.75rem] bg-slate-950/80 p-5 ring-1 ring-white/5 transition hover:bg-slate-900">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <p className="text-xs uppercase tracking-[0.3em] text-cyan-300">{job.type || 'Full-time'}</p>
-                        <h4 className="mt-3 text-lg font-semibold text-white">{job.title}</h4>
-                      </div>
-                      <span className="rounded-3xl bg-slate-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-300">
-                        {job.location || 'Remote'}
-                      </span>
-                    </div>
-                    <p className="mt-4 text-sm leading-6 text-slate-400">{job.company || 'Top-tier team'}</p>
-                    <p className="mt-4 text-sm leading-6 text-slate-400">{job.description ? `${job.description.slice(0, 95)}...` : 'No description available yet.'}</p>
-                  </div>
-                )) : (
-                  <div className="rounded-[1.75rem] bg-slate-950/80 p-6 text-slate-400">No roles available yet. Add a job to make this panel show your active positions.</div>
-                )}
-              </div>
-            </div>
-          )}
-        </section>
-
-        <section className="mt-8 rounded-[2rem] border border-slate-800 bg-slate-900/95 p-6 shadow-2xl shadow-slate-950/20">
-          <div className="grid gap-6">
-            <SearchFilter
-              onSearch={(term) => setSearchTerm(term)}
-              onStatusFilter={(statuses) => setSelectedStatuses(statuses)}
-            />
-            <div className="grid gap-6 xl:grid-cols-[1.3fr_0.9fr]">
-              <JobPreviewCard job={activeJob} />
-              <PipelineStageTabs stages={stageDefinitions} selectedStage={selectedStage} onSelect={setSelectedStage} />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <SummaryCard title="Offer conversion" value={`${conversionRate}%`} subtitle="Shows the ratio of offers made from the current pipeline." />
+              <SummaryCard title="Shortlisted" value={statusCount.shortlisted} subtitle="Highlight the most promising candidates moving toward interviews." />
             </div>
           </div>
         </section>
 
-        <section className="mt-8 rounded-[2rem] border border-slate-800 bg-slate-900/95 p-6 shadow-2xl shadow-slate-950/20">
+        <section className="mt-6 rounded-[2rem] border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-5 shadow-2xl shadow-slate-950/24 ring-1 ring-white/5 lg:p-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">Workflow modules</p>
-              <h2 className="mt-3 text-2xl font-semibold text-white">Professional module grid, four cards per row</h2>
-              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-400">
-                Each module is presented as a clean card, and clicking any card opens the full-page workflow view with the related questions, details, and forms.
+              <p className="text-sm uppercase tracking-[0.3em] text-emerald-300">Module library</p>
+              <h2 className="mt-3 text-2xl font-semibold text-white">Four-up cards with direct page navigation</h2>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
+                Keep the overview clean here, then open the dedicated role, pipeline, or workflow pages when you need details.
               </p>
             </div>
             <button
               type="button"
-              onClick={() => navigate('/workflow')}
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-sky-500 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:from-cyan-400 hover:to-sky-400"
+              onClick={() => navigate('/roles')}
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:from-emerald-400 hover:to-cyan-400"
             >
-              <Workflow size={16} />
-              Open full page
+              <ArrowRight size={16} />
+              View all roles
             </button>
           </div>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {workflowModules.map((module) => (
-              <div
+              <button
                 key={module.id}
-                role="button"
-                tabIndex={0}
-                onClick={() => navigate(`/workflow?module=${module.id}`)}
-                className="group rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5 text-left transition hover:-translate-y-1 hover:border-cyan-500/30 hover:bg-slate-900"
+                type="button"
+                onClick={() => navigate(module.id === 'role-selection' ? '/roles' : `/workflow?module=${module.id}`)}
+                className="group rounded-[1.5rem] border border-slate-800 bg-slate-950/90 p-5 text-left shadow-lg shadow-slate-950/20 transition hover:-translate-y-1 hover:border-emerald-500/30 hover:bg-slate-900 hover:shadow-emerald-500/10"
               >
-                <p className="text-xs uppercase tracking-[0.24em] text-cyan-300">{module.badge}</p>
-                <h3 className="mt-3 text-lg font-semibold text-white transition group-hover:text-cyan-200">{module.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-400">{module.subtitle}</p>
-                <p className="mt-4 text-sm leading-6 text-slate-500">{module.summary}</p>
-                <div className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
-                  Open details
+                <p className="text-xs uppercase tracking-[0.24em] text-emerald-300">{module.badge}</p>
+                <h3 className="mt-3 text-lg font-semibold text-white transition group-hover:text-emerald-200">{module.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-300">{module.subtitle}</p>
+                <p className="mt-4 text-sm leading-6 text-slate-400">{module.summary}</p>
+                <div className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">
+                  Open page
                   <Workflow size={14} />
                 </div>
-                {module.id === 'role-selection' && (
-                  <div className="mt-5 grid gap-2">
-                    {module.roles.slice(0, 4).map((role) => (
-                      <button
-                        key={role.id}
-                        type="button"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          navigate(`/workflow?module=${module.id}&role=${role.id}`);
-                        }}
-                        className="rounded-2xl border border-slate-800 bg-slate-900/80 px-3 py-3 text-left text-sm text-slate-200 transition hover:border-cyan-500/30 hover:bg-slate-900"
-                      >
-                        <p className="font-semibold text-white">{role.label}</p>
-                        <p className="mt-1 text-xs uppercase tracking-[0.18em] text-slate-500">{role.level} • {role.engagement}</p>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+              </button>
             ))}
           </div>
         </section>
 
-        <div className="mt-8 grid gap-6 xl:grid-cols-[1.4fr_0.9fr]">
-          <section className="space-y-6">
-            <div className="rounded-[2rem] border border-slate-800 bg-slate-900/95 p-6 shadow-2xl shadow-slate-950/20">
+        <div className="mt-6 grid gap-6 xl:grid-cols-[1.4fr_0.9fr]">
+          <section className="space-y-5">
+            <div className="rounded-[2rem] border border-slate-800 bg-slate-900/95 p-5 shadow-2xl shadow-slate-950/20 lg:p-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">Open jobs</p>
@@ -345,7 +228,7 @@ const Dashboard = () => {
                   {totalJobs} Active roles
                 </div>
               </div>
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
+              <div className="mt-5 grid gap-4 md:grid-cols-2">
                 {jobs.length ? jobs.slice(0, 4).map((job) => (
                   <button
                     type="button"
@@ -370,18 +253,30 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <aside className="space-y-6">
-              <div className="rounded-[2rem] border border-slate-800 bg-slate-900/95 p-6 shadow-2xl shadow-slate-950/20">
-                <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">Pipeline board</p>
-                <h2 className="mt-3 text-2xl font-semibold text-white">Candidate flow</h2>
-                <div className="mt-6">
-                  <DragDropContext onDragEnd={handleDragEnd}>
-                    <KanbanBoard columns={columns} />
-                  </DragDropContext>
+            <aside className="space-y-5">
+              <div className="rounded-[2rem] border border-slate-800 bg-slate-900/95 p-5 shadow-2xl shadow-slate-950/20 lg:p-6">
+                <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">Quick actions</p>
+                <h2 className="mt-3 text-2xl font-semibold text-white">Jump to the clean pages</h2>
+                <div className="mt-6 grid gap-3">
+                  {[
+                    { label: 'Open roles page', path: '/roles' },
+                    { label: 'Open pipeline page', path: '/pipeline' },
+                    { label: 'Open workflow workspace', path: '/workflow' },
+                  ].map((item) => (
+                    <button
+                      key={item.path}
+                      type="button"
+                      onClick={() => navigate(item.path)}
+                      className="flex items-center justify-between rounded-3xl bg-slate-950/80 px-4 py-4 text-left text-sm font-semibold text-slate-200 ring-1 ring-white/5 transition hover:bg-slate-900 hover:text-cyan-300"
+                    >
+                      <span>{item.label}</span>
+                      <ArrowRight size={16} />
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              <div className="rounded-[2rem] border border-slate-800 bg-slate-900/95 p-6 shadow-2xl shadow-slate-950/20">
+              <div className="rounded-[2rem] border border-slate-800 bg-slate-900/95 p-5 shadow-2xl shadow-slate-950/20 lg:p-6">
                 <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">Recent activity</p>
                 <h2 className="mt-3 text-2xl font-semibold text-white">What changed</h2>
                 <div className="mt-6 space-y-4">

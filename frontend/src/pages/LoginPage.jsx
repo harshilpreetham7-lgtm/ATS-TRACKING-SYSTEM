@@ -35,20 +35,20 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
-      <div className="mx-auto grid min-h-screen max-w-7xl grid-cols-1 items-center gap-10 px-4 py-10 lg:grid-cols-[1.4fr_1fr]">
-        <section className="relative rounded-[2rem] border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-slate-950/40 backdrop-blur-lg lg:p-12 overflow-hidden">
+      <div className="mx-auto grid min-h-screen max-w-[1440px] grid-cols-1 items-center gap-8 px-4 py-4 sm:px-6 lg:grid-cols-[1.35fr_0.9fr] lg:py-6">
+        <section className="relative overflow-hidden rounded-[2rem] border border-slate-800 bg-slate-900/90 p-7 shadow-2xl shadow-slate-950/40 backdrop-blur-lg lg:p-10">
           <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-gradient-to-br from-cyan-600/20 to-violet-600/10 blur-3xl animate-float" />
           <div className="inline-flex rounded-full bg-cyan-500/10 px-4 py-2 text-sm font-semibold text-cyan-300 ring-1 ring-cyan-500/20">
             Built for modern recruiting teams
           </div>
-          <h1 className="mt-8 text-4xl font-black tracking-tight text-white sm:text-5xl">
+          <h1 className="mt-7 text-4xl font-black tracking-tight text-white sm:text-5xl">
             Real-time hiring intelligence that recruiters love.
           </h1>
           <p className="mt-6 max-w-xl text-slate-400 sm:text-lg">
             Manage pipelines, move candidates instantly, and surface the right hires with a premium ATS experience designed to impress HR teams.
           </p>
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+          <div className="mt-8 grid gap-3 sm:grid-cols-2">
             <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-5 shadow-lg shadow-slate-950/20">
               <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Live Collaboration</p>
               <p className="mt-3 text-lg font-semibold text-white">Instant status updates across your team.</p>
@@ -59,7 +59,7 @@ const LoginPage = () => {
             </div>
           </div>
 
-          <div className="mt-10 rounded-3xl bg-slate-800/80 p-6 ring-1 ring-white/10">
+          <div className="mt-8 rounded-3xl bg-slate-800/80 p-5 ring-1 ring-white/10">
             <p className="text-sm uppercase tracking-[0.24em] text-cyan-300">Why this ATS stands out</p>
             <ul className="mt-5 space-y-3 text-slate-400">
               <li>• Visual hiring pipeline for every role.</li>
@@ -69,8 +69,8 @@ const LoginPage = () => {
           </div>
         </section>
 
-        <section className="rounded-[2rem] border border-slate-800 bg-slate-900/95 p-8 shadow-2xl shadow-slate-950/40 backdrop-blur-lg lg:p-10 relative">
-          <div className="mb-8 flex items-center justify-between gap-4">
+        <section className="relative rounded-[2rem] border border-slate-800 bg-slate-900/95 p-7 shadow-2xl shadow-slate-950/40 backdrop-blur-lg lg:p-9">
+          <div className="mb-6 flex items-center justify-between gap-4">
             <div>
               <p className="text-sm text-slate-400">{mode === 'login' ? 'Sign in to your team portal' : 'Create a recruiter account'}</p>
               <h2 className="mt-2 text-3xl font-semibold text-white">{mode === 'login' ? 'Welcome back' : 'Get started'}</h2>
@@ -80,7 +80,7 @@ const LoginPage = () => {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
+          <form onSubmit={handleSubmit} className="relative z-10 space-y-4">
             {mode === 'register' && (
               <div>
                 <label className="text-sm font-medium text-slate-300">Full name</label>
@@ -139,7 +139,7 @@ const LoginPage = () => {
             </button>
           </form>
 
-          <div className="mt-8 border-t border-slate-800 pt-6 text-center text-sm text-slate-500">
+          <div className="mt-6 border-t border-slate-800 pt-5 text-center text-sm text-slate-500">
             <button type="button" onClick={() => setMode(mode === 'login' ? 'register' : 'login')} className="font-semibold text-white hover:text-cyan-300">
               {mode === 'login' ? 'Create a recruiter account' : 'Already have an account? Login'}
             </button>
