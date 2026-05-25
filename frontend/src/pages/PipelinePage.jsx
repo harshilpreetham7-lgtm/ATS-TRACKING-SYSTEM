@@ -44,8 +44,52 @@ const PipelinePage = () => {
   const handleDragEnd = async (result) => {
     if (!result.destination) return;
     const { source, destination, draggableId } = result;
-    if (source.droppableId === destination.droppableId) return;
-    await updateApplicationStatus(draggableId, destination.droppableId);
+
+    // helper to reorder items within same column
+    const reorderWithin = (items, statusId, fromIndex, toIndex) => {
+      const filtered = items.filter((it) => it.status === statusId);
+      const item = filtered.splice(fromIndex, 1)[0];
+      filtered.splice(toIndex, 0, item);
+      // rebuild applications keeping other statuses in same order
+      const other = items.filter((it) => it.status !== statusId);
+      // merge by keeping order: place filtered items where that status belongs
+      // simple approach: remove old items of status and append reordered at end of other preserving relative positions
+      const remaining = other.concat(filtered);
+      return remaining;
+    };
+
+    // If dropped in same column -> reorder locally and persist order
+    if (source.droppableId === destination.droppableId) {
+      const newApps = reorderWithin(applications, source.droppableId, source.index, destination.index);
+      useAppStore.setState({ applications: newApps });
+      // persist ordering (optimistic)
+      const orderedIds = newApps.map((a) => a._id);
+      const ok = await useAppStore.getState().updateApplicationsOrder(orderedIds);
+      if (!ok) {
+        // rollback handled inside store, but restore previous if needed
+        useAppStore.setState({ applications });
+      }
+      return;
+    }
+
+    // Moving across columns: optimistic update then call backend
+    const prevApps = applications;
+    const moving = applications.find((a) => a._id === draggableId);
+    if (!moving) return;
+
+    const updated = { ...moving, status: destination.droppableId };
+    const newApplications = applications
+      .filter((a) => a._id !== draggableId)
+      .concat(updated);
+
+    // Optimistically update store
+    useAppStore.setState({ applications: newApplications });
+
+    const ok = await updateApplicationStatus(draggableId, destination.droppableId);
+    if (!ok) {
+      // rollback on failure
+      useAppStore.setState({ applications: prevApps });
+    }
   };
 
   return (

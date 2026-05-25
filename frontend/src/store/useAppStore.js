@@ -133,4 +133,29 @@ export const useAppStore = create((set, get) => ({
       set({ loading: false });
     }
   },
+  updateApplicationsOrder: async (orderedIds) => {
+    set({ loading: true, error: null });
+    try {
+      // send new ordering to backend - backend should accept an array of IDs in desired order
+      const response = await api.put('/applications/order', { order: orderedIds });
+      // if backend returns updated applications, replace store, otherwise reorder locally
+      if (response.data && Array.isArray(response.data)) {
+        set({ applications: response.data });
+      } else {
+        const current = get().applications;
+        const byId = {};
+        current.forEach((a) => { byId[a._id] = a; });
+        const reordered = orderedIds.map((id) => byId[id]).filter(Boolean);
+        set({ applications: reordered.concat(current.filter((a) => !orderedIds.includes(a._id))) });
+      }
+      get().pushNotification({ type: 'success', title: 'Order saved', message: 'Candidate order persisted.' });
+      return true;
+    } catch (error) {
+      set({ error: error.response?.data?.message || error.message });
+      get().pushNotification({ type: 'error', title: 'Order save failed', message: error.response?.data?.message || error.message });
+      return false;
+    } finally {
+      set({ loading: false });
+    }
+  },
 }));

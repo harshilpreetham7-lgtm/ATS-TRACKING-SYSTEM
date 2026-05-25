@@ -59,10 +59,11 @@ const KanbanBoard = ({ columns }) => {
             </div>
             <Droppable droppableId={column.id}>
               {(provided, snapshot) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  className={`min-h-[300px] rounded-[1.5rem] p-3 transition duration-300 ${snapshot.isDraggingOver ? 'bg-slate-900/80 ring-2 ring-cyan-500/40' : 'bg-slate-900/30'}`}>
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    aria-live="polite"
+                    className={`min-h-[300px] rounded-[1.5rem] p-3 transition duration-300 ${snapshot.isDraggingOver ? 'bg-slate-900/80 ring-2 ring-cyan-500/40 shadow-lg' : 'bg-slate-900/30'}`}>
                   {column.items.length > 0 ? column.items.map((application, index) => (
                     <Draggable key={application._id} draggableId={application._id} index={index}>
                       {(dragProvided, dragSnapshot) => (
@@ -101,8 +102,10 @@ const KanbanBoard = ({ columns }) => {
                       )}
                     </Draggable>
                   )) : (
-                    <div className="rounded-[1.25rem] border-2 border-dashed border-slate-700/50 p-6 text-center min-h-[260px] flex items-center justify-center">
-                      <p className="text-slate-400 text-sm">Drop candidates here</p>
+                    <div className="rounded-[1.25rem] border-2 border-dashed border-slate-700/50 p-6 text-center min-h-[260px] flex items-center justify-center bg-gradient-to-br from-slate-900/70 to-slate-950/50">
+                      <div className="animate-pulse text-slate-500">
+                        <p className="text-slate-400 text-sm">Drop candidates here</p>
+                      </div>
                     </div>
                   )}
                   {provided.placeholder}
