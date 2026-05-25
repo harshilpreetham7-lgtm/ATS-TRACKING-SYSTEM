@@ -47,7 +47,7 @@ const RolesPage = () => {
             <button
               type="button"
               onClick={() => navigate('/workflow?module=role-selection&role=' + selectedRole.id)}
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-sky-500 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:from-cyan-400 hover:to-sky-400"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-50 shadow-lg shadow-emerald-500/35 transition hover:from-emerald-400 hover:to-teal-400 hover:shadow-emerald-500/45"
             >
               Open full detail page
               <ArrowRight size={16} />
@@ -90,7 +90,7 @@ const RolesPage = () => {
                         key={item.id}
                         type="button"
                         onClick={() => setRoleFilter(item.id)}
-                        className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition ${active ? 'bg-indigo-500 text-slate-950' : 'bg-slate-900 text-slate-300 ring-1 ring-white/10 hover:bg-slate-800 hover:text-indigo-300'}`}
+                        className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition ${active ? 'bg-gradient-to-r from-rose-500 to-amber-500 text-slate-50 shadow-lg shadow-rose-500/40' : 'bg-slate-900/60 text-slate-300 ring-1 ring-white/5 hover:bg-slate-800/80 hover:text-rose-300 hover:ring-rose-400/50'}`}
                       >
                         {item.label}
                       </button>
@@ -209,7 +209,7 @@ const RolesPage = () => {
                 <button
                   type="button"
                   onClick={() => navigate(`/workflow?module=role-selection&role=${selectedRole.id}`)}
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-950 shadow-lg shadow-indigo-500/20 transition hover:from-indigo-400 hover:to-purple-400"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-50 shadow-lg shadow-emerald-500/35 transition hover:from-emerald-400 hover:to-teal-400 hover:shadow-emerald-500/45"
                 >
                   Open workflow form
                   <ArrowRight size={16} />

@@ -63,7 +63,7 @@ const HomePage = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/login')}
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-slate-950 shadow-lg shadow-indigo-500/20 transition hover:from-indigo-400 hover:to-purple-400"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-slate-50 shadow-lg shadow-indigo-500/30 transition hover:from-indigo-400 hover:to-cyan-400 hover:shadow-indigo-500/40"
                 >
                   Launch app
                   <ArrowRight size={16} />

@@ -37,19 +37,19 @@ const NavBar = ({ user, onLogout, onSync }) => {
   }, []);
 
   return (
-    <div className="sticky top-0 z-30 border-b border-slate-800/50 bg-gradient-to-r from-slate-950/98 via-slate-950/95 to-slate-950/98 shadow-sm shadow-slate-950/20 backdrop-blur-xl">
+    <div className="sticky top-0 z-30 border-b border-rose-900/30 bg-gradient-to-r from-slate-950/96 via-rose-950/85 to-slate-950/96 shadow-sm shadow-rose-950/30 backdrop-blur-xl">
       <div className="mx-auto flex max-w-[1440px] items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-full bg-indigo-500 animate-pulse shadow-lg shadow-indigo-500/50" />
-            <p className="text-xs uppercase tracking-[0.24em] text-indigo-300 font-semibold">Recruitment Command Center</p>
+            <div className="h-3 w-3 rounded-full bg-rose-400 animate-pulse shadow-lg shadow-rose-400/50" />
+            <p className="text-xs uppercase tracking-[0.24em] text-rose-300 font-semibold">Recruitment Command Center</p>
           </div>
           <h1 className="text-2xl font-bold text-white mt-1">ATS Real-Time Dashboard</h1>
           <div className="flex items-center gap-4 mt-1 text-xs text-slate-400">
             <p>{user?.role === 'recruiter' ? '👨‍💼 Recruiter Dashboard' : '📊 Hiring Pipeline'}</p>
             <span className="text-slate-600">•</span>
             <p className="flex items-center gap-1">👤 <span className="text-slate-300">{user?.name || 'Guest'}</span></p>
-            {isOnline && <span className="flex items-center gap-1 text-indigo-400"><Activity size={12} /> Connected</span>}
+            {isOnline && <span className="flex items-center gap-1 text-emerald-300"><Activity size={12} /> Connected</span>}
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
             {navItems.map((item) => {
@@ -59,7 +59,7 @@ const NavBar = ({ user, onLogout, onSync }) => {
                   key={item.path}
                   type="button"
                   onClick={() => navigate(item.path)}
-                  className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition ${active ? 'bg-indigo-500 text-slate-950' : 'bg-slate-900/80 text-slate-300 ring-1 ring-white/10 hover:bg-slate-800 hover:text-indigo-300'}`}
+                  className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition ${active ? 'bg-gradient-to-r from-rose-500 to-amber-500 text-slate-50 shadow-lg shadow-rose-500/40' : 'bg-slate-900/60 text-slate-300 ring-1 ring-white/5 hover:bg-slate-800 hover:text-rose-300 hover:ring-rose-400/50'}`}
                 >
                   {item.label}
                 </button>
@@ -72,7 +72,7 @@ const NavBar = ({ user, onLogout, onSync }) => {
           <button
             onClick={handleSync}
             disabled={isSyncing}
-            className={`rounded-full bg-gradient-to-r from-indigo-600/20 to-purple-600/20 px-4 py-2 text-sm font-medium text-indigo-200 ring-1 ring-indigo-500/40 transition duration-300 ${isSyncing ? 'opacity-50 cursor-not-allowed' : 'hover:from-indigo-600/30 hover:to-purple-600/30 hover:ring-indigo-500/60 hover:shadow-lg hover:shadow-indigo-500/20'}`}
+            className={`rounded-full bg-gradient-to-r from-emerald-600/30 to-rose-600/30 px-4 py-2 text-sm font-medium text-emerald-200 ring-1 ring-emerald-400/60 transition duration-300 ${isSyncing ? 'opacity-50 cursor-not-allowed' : 'hover:from-emerald-600/40 hover:to-rose-600/40 hover:ring-emerald-400/80 hover:shadow-lg hover:shadow-emerald-500/30'}`}
           >
             <div className="flex items-center gap-2">
               <Zap size={14} className={isSyncing ? 'animate-spin' : ''} />

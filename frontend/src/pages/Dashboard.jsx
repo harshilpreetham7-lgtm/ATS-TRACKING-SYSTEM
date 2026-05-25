@@ -189,7 +189,7 @@ const Dashboard = () => {
             <button
               type="button"
               onClick={() => navigate('/roles')}
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-950 shadow-lg shadow-indigo-500/20 transition hover:from-indigo-400 hover:to-purple-400"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-50 shadow-lg shadow-emerald-500/35 transition hover:from-emerald-400 hover:to-teal-400 hover:shadow-emerald-500/45"
             >
               <ArrowRight size={16} />
               View all roles
@@ -203,11 +203,11 @@ const Dashboard = () => {
                 onClick={() => navigate(module.id === 'role-selection' ? '/roles' : `/workflow?module=${module.id}`)}
                 className="group rounded-[1.5rem] border border-slate-800 bg-slate-950/90 p-5 text-left shadow-lg shadow-slate-950/20 transition hover:-translate-y-1 hover:border-emerald-500/30 hover:bg-slate-900 hover:shadow-emerald-500/10"
               >
-                <p className="text-xs uppercase tracking-[0.24em] text-indigo-300">{module.badge}</p>
-                <h3 className="mt-3 text-lg font-semibold text-white transition group-hover:text-indigo-200">{module.title}</h3>
+                <p className="text-xs uppercase tracking-[0.24em] text-rose-300">{module.badge}</p>
+                <h3 className="mt-3 text-lg font-semibold text-white transition group-hover:text-rose-200">{module.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-300">{module.subtitle}</p>
                 <p className="mt-4 text-sm leading-6 text-slate-400">{module.summary}</p>
-                <div className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-indigo-300">
+                <div className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-rose-300">
                   Open page
                   <Workflow size={14} />
                 </div>

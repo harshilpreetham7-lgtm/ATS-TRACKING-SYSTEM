@@ -133,7 +133,7 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-3xl bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-slate-950 shadow-xl shadow-indigo-500/10 transition hover:from-indigo-400 hover:to-purple-400"
+              className="w-full rounded-3xl bg-gradient-to-r from-rose-500 to-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-slate-50 shadow-xl shadow-rose-500/25 transition hover:from-rose-400 hover:to-amber-400 hover:shadow-rose-500/35"
             >
               {loading ? 'Working...' : mode === 'login' ? 'Login' : 'Create account'}
             </button>
