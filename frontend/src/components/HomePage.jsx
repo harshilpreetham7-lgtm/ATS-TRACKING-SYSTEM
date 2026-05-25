@@ -36,10 +36,10 @@ const HomePage = () => {
         <div className="overflow-hidden rounded-[2.25rem] border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 shadow-2xl shadow-slate-950/40">
           <div className="grid gap-8 px-5 py-8 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-10">
             <section className="space-y-8">
-              <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.26em] text-cyan-300">
+              <p className="inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.26em] text-indigo-300">
                 <Sparkles size={14} />
                 Featured ATS
-              </div>
+              </p>
 
               <div>
                 <h1 className="max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
@@ -63,7 +63,7 @@ const HomePage = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/login')}
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-sky-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:from-cyan-400 hover:to-sky-400"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-slate-950 shadow-lg shadow-indigo-500/20 transition hover:from-indigo-400 hover:to-purple-400"
                 >
                   Launch app
                   <ArrowRight size={16} />
@@ -71,7 +71,7 @@ const HomePage = () => {
                 <button
                   type="button"
                   onClick={() => navigate(token ? '/dashboard' : '/login')}
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900/80 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-slate-200 transition hover:border-cyan-500/40 hover:text-cyan-300"
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900/80 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-slate-200 transition hover:border-indigo-500/40 hover:text-indigo-300"
                 >
                   {token ? 'Open dashboard' : 'Secure access'}
                   <Lock size={16} />
@@ -93,8 +93,8 @@ const HomePage = () => {
             </section>
 
             <aside className="space-y-4 rounded-[2rem] border border-slate-800 bg-slate-950/80 p-5 ring-1 ring-white/5 lg:p-6">
-              <div className="rounded-[1.75rem] border border-slate-800 bg-gradient-to-br from-cyan-500/10 via-slate-950 to-sky-500/10 p-6">
-                <p className="text-xs uppercase tracking-[0.28em] text-cyan-300">App preview</p>
+              <div className="rounded-[1.75rem] border border-slate-800 bg-gradient-to-br from-indigo-500/10 via-slate-950 to-purple-500/10 p-6">
+                <p className="text-xs uppercase tracking-[0.28em] text-indigo-300">App preview</p>
                 <h2 className="mt-3 text-2xl font-semibold text-white">Designed like a store listing</h2>
                 <p className="mt-4 text-sm leading-6 text-slate-400">
                   Strong opener, clear benefits, and a path that feels natural on first open.
@@ -106,7 +106,7 @@ const HomePage = () => {
                   const Icon = card.icon;
                   return (
                     <div key={card.title} className="flex items-start gap-4 rounded-3xl bg-slate-900/80 p-4 ring-1 ring-white/5">
-                      <div className="rounded-2xl bg-cyan-500/10 p-3 text-cyan-300 ring-1 ring-cyan-500/20">
+                      <div className="rounded-2xl bg-indigo-500/10 p-3 text-indigo-300 ring-1 ring-indigo-500/20">
                         <Icon size={18} />
                       </div>
                       <div>

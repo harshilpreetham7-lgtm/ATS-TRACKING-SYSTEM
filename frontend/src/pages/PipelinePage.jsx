@@ -55,7 +55,7 @@ const PipelinePage = () => {
         <section className="rounded-[2rem] border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-6 shadow-2xl shadow-slate-950/30 ring-1 ring-white/5 lg:p-7">
           <div className="flex flex-wrap items-end justify-between gap-5">
             <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-emerald-300">Pipeline workspace</p>
+              <p className="text-sm uppercase tracking-[0.3em] text-indigo-300">Pipeline workspace</p>
               <h1 className="mt-3 text-3xl font-bold text-white sm:text-4xl">A dedicated page for candidate movement and stage tracking.</h1>
               <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-300">
                 The board, stage descriptions, and hiring decisions live here so the dashboard stays clean and the workflow stays professional.
@@ -73,7 +73,7 @@ const PipelinePage = () => {
         <section className="mt-6 rounded-[2rem] border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-5 shadow-2xl shadow-slate-950/24 ring-1 ring-white/5 lg:p-6">
           <div className="grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
             <div className="rounded-[2rem] border border-slate-800 bg-slate-950/90 p-5 shadow-lg shadow-slate-950/20">
-              <p className="text-sm uppercase tracking-[0.3em] text-emerald-300">Pipeline board</p>
+              <p className="text-sm uppercase tracking-[0.3em] text-indigo-300">Pipeline board</p>
               <div className="mt-5">
                 <DragDropContext onDragEnd={handleDragEnd}>
                   <KanbanBoard columns={columns} />

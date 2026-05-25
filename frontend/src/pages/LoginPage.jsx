@@ -37,8 +37,8 @@ const LoginPage = () => {
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <div className="mx-auto grid min-h-screen max-w-[1440px] grid-cols-1 items-center gap-8 px-4 py-4 sm:px-6 lg:grid-cols-[1.35fr_0.9fr] lg:py-6">
         <section className="relative overflow-hidden rounded-[2rem] border border-slate-800 bg-slate-900/90 p-7 shadow-2xl shadow-slate-950/40 backdrop-blur-lg lg:p-10">
-          <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-gradient-to-br from-cyan-600/20 to-violet-600/10 blur-3xl animate-float" />
-          <div className="inline-flex rounded-full bg-cyan-500/10 px-4 py-2 text-sm font-semibold text-cyan-300 ring-1 ring-cyan-500/20">
+          <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-600/20 to-purple-600/10 blur-3xl animate-float" />
+          <div className="inline-flex rounded-full bg-indigo-500/10 px-4 py-2 text-sm font-semibold text-indigo-300 ring-1 ring-indigo-500/20">
             Built for modern recruiting teams
           </div>
           <h1 className="mt-7 text-4xl font-black tracking-tight text-white sm:text-5xl">
@@ -60,7 +60,7 @@ const LoginPage = () => {
           </div>
 
           <div className="mt-8 rounded-3xl bg-slate-800/80 p-5 ring-1 ring-white/10">
-            <p className="text-sm uppercase tracking-[0.24em] text-cyan-300">Why this ATS stands out</p>
+            <p className="text-sm uppercase tracking-[0.24em] text-indigo-300">Why this ATS stands out</p>
             <ul className="mt-5 space-y-3 text-slate-400">
               <li>• Visual hiring pipeline for every role.</li>
               <li>• Real-time candidate updates and notifications.</li>
@@ -75,7 +75,7 @@ const LoginPage = () => {
               <p className="text-sm text-slate-400">{mode === 'login' ? 'Sign in to your team portal' : 'Create a recruiter account'}</p>
               <h2 className="mt-2 text-3xl font-semibold text-white">{mode === 'login' ? 'Welcome back' : 'Get started'}</h2>
             </div>
-            <div className="rounded-3xl bg-slate-950/90 px-3 py-2 text-xs font-semibold uppercase tracking-[0.26em] text-cyan-300 ring-1 ring-cyan-500/20">
+            <div className="rounded-3xl bg-slate-950/90 px-3 py-2 text-xs font-semibold uppercase tracking-[0.26em] text-indigo-300 ring-1 ring-indigo-500/20">
               {mode === 'login' ? 'Secure login' : 'Fast onboarding'}
             </div>
           </div>
@@ -133,14 +133,14 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-3xl bg-gradient-to-r from-cyan-500 to-sky-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-slate-950 shadow-xl shadow-cyan-500/10 transition hover:from-cyan-400 hover:to-sky-400"
+              className="w-full rounded-3xl bg-gradient-to-r from-indigo-500 to-purple-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-slate-950 shadow-xl shadow-indigo-500/10 transition hover:from-indigo-400 hover:to-purple-400"
             >
               {loading ? 'Working...' : mode === 'login' ? 'Login' : 'Create account'}
             </button>
           </form>
 
           <div className="mt-6 border-t border-slate-800 pt-5 text-center text-sm text-slate-500">
-            <button type="button" onClick={() => setMode(mode === 'login' ? 'register' : 'login')} className="font-semibold text-white hover:text-cyan-300">
+            <button type="button" onClick={() => setMode(mode === 'login' ? 'register' : 'login')} className="font-semibold text-white hover:text-indigo-300">
               {mode === 'login' ? 'Create a recruiter account' : 'Already have an account? Login'}
             </button>
           </div>

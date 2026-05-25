@@ -35,7 +35,7 @@ const RolesPage = () => {
         <section className="rounded-[2rem] border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-6 shadow-2xl shadow-slate-950/30 lg:p-7">
           <div className="flex flex-wrap items-end justify-between gap-5">
             <div>
-              <p className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.26em] text-cyan-300">
+              <p className="inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.26em] text-indigo-300">
                 <Sparkles size={14} />
                 Role catalog
               </p>
@@ -61,7 +61,7 @@ const RolesPage = () => {
               { label: 'Open workflow pages', value: '1 click' },
             ].map((item) => (
               <div key={item.label} className="rounded-[1.5rem] border border-slate-800 bg-slate-950/90 p-5 shadow-lg shadow-slate-950/20 ring-1 ring-white/5">
-                <p className="text-xs uppercase tracking-[0.26em] text-emerald-300">{item.label}</p>
+                <p className="text-xs uppercase tracking-[0.26em] text-indigo-300">{item.label}</p>
                 <p className="mt-3 text-2xl font-semibold text-white">{item.value}</p>
               </div>
             ))}
@@ -72,7 +72,7 @@ const RolesPage = () => {
               <div className="rounded-[2rem] border border-slate-800 bg-slate-900/90 p-5 shadow-2xl shadow-slate-950/24 lg:p-6">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.3em] text-emerald-300">Featured roles</p>
+                    <p className="text-xs uppercase tracking-[0.3em] text-indigo-300">Featured roles</p>
                     <h2 className="mt-3 text-2xl font-semibold text-white">Best starting points</h2>
                   </div>
                   <p className="text-sm text-slate-400">Four highlighted cards</p>
@@ -90,7 +90,7 @@ const RolesPage = () => {
                         key={item.id}
                         type="button"
                         onClick={() => setRoleFilter(item.id)}
-                        className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition ${active ? 'bg-emerald-500 text-slate-950' : 'bg-slate-900 text-slate-300 ring-1 ring-white/10 hover:bg-slate-800 hover:text-emerald-300'}`}
+                        className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition ${active ? 'bg-indigo-500 text-slate-950' : 'bg-slate-900 text-slate-300 ring-1 ring-white/10 hover:bg-slate-800 hover:text-indigo-300'}`}
                       >
                         {item.label}
                       </button>
@@ -123,7 +123,7 @@ const RolesPage = () => {
               <div className="rounded-[2rem] border border-slate-800 bg-slate-900/90 p-5 shadow-2xl shadow-slate-950/24 lg:p-6">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.3em] text-emerald-300">All roles</p>
+                    <p className="text-xs uppercase tracking-[0.3em] text-indigo-300">All roles</p>
                     <h2 className="mt-3 text-2xl font-semibold text-white">Complete role library</h2>
                   </div>
                   <p className="text-sm text-slate-400">{roleModule?.roles?.length || 0} roles</p>
@@ -153,7 +153,7 @@ const RolesPage = () => {
             </div>
 
             <div className="sticky top-6 self-start rounded-[2rem] border border-slate-800 bg-slate-900/90 p-5 shadow-2xl shadow-slate-950/20 lg:p-6">
-              <p className="text-xs uppercase tracking-[0.3em] text-cyan-300">Role detail</p>
+              <p className="text-xs uppercase tracking-[0.3em] text-indigo-300">Role detail</p>
               <h2 className="mt-3 text-2xl font-semibold text-white">{selectedRole?.label}</h2>
               <p className="mt-4 text-sm leading-6 text-slate-400">{selectedRole?.summary}</p>
 
@@ -182,7 +182,7 @@ const RolesPage = () => {
               </div>
 
               <div className="mt-6 rounded-[1.5rem] bg-slate-950/80 p-4 ring-1 ring-white/5">
-                <p className="text-xs uppercase tracking-[0.24em] text-cyan-300">Required fields</p>
+                <p className="text-xs uppercase tracking-[0.24em] text-indigo-300">Required fields</p>
                 <div className="mt-4 space-y-3 text-sm text-slate-300">
                   {(roleModule?.fields || []).map((field) => {
                     let helperText = field.placeholder || 'Enter the required value for this field.';
@@ -194,7 +194,7 @@ const RolesPage = () => {
 
                     return (
                       <div key={field.name} className="flex items-start gap-3 rounded-2xl bg-slate-900/80 p-3">
-                        <ListChecks className="mt-0.5 text-cyan-300" size={16} />
+                        <ListChecks className="mt-0.5 text-indigo-300" size={16} />
                         <div>
                           <p className="font-semibold text-white">{field.label}</p>
                           <p className="text-slate-400">{helperText}</p>
@@ -209,7 +209,7 @@ const RolesPage = () => {
                 <button
                   type="button"
                   onClick={() => navigate(`/workflow?module=role-selection&role=${selectedRole.id}`)}
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-sky-500 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:from-cyan-400 hover:to-sky-400"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-950 shadow-lg shadow-indigo-500/20 transition hover:from-indigo-400 hover:to-purple-400"
                 >
                   Open workflow form
                   <ArrowRight size={16} />
@@ -217,7 +217,7 @@ const RolesPage = () => {
                 <button
                   type="button"
                   onClick={() => setRoleFilter('all')}
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-950/80 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-200 transition hover:border-cyan-500/40 hover:text-cyan-300"
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-950/80 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-200 transition hover:border-indigo-500/40 hover:text-indigo-300"
                 >
                   <SlidersHorizontal size={16} />
                   Reset filters

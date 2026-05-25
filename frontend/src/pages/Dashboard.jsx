@@ -180,7 +180,7 @@ const Dashboard = () => {
         <section className="mt-6 rounded-[2rem] border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-5 shadow-2xl shadow-slate-950/24 ring-1 ring-white/5 lg:p-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-emerald-300">Module library</p>
+              <p className="text-sm uppercase tracking-[0.3em] text-indigo-300">Module library</p>
               <h2 className="mt-3 text-2xl font-semibold text-white">Four-up cards with direct page navigation</h2>
               <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
                 Keep the overview clean here, then open the dedicated role, pipeline, or workflow pages when you need details.
@@ -189,7 +189,7 @@ const Dashboard = () => {
             <button
               type="button"
               onClick={() => navigate('/roles')}
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:from-emerald-400 hover:to-cyan-400"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-950 shadow-lg shadow-indigo-500/20 transition hover:from-indigo-400 hover:to-purple-400"
             >
               <ArrowRight size={16} />
               View all roles
@@ -203,11 +203,11 @@ const Dashboard = () => {
                 onClick={() => navigate(module.id === 'role-selection' ? '/roles' : `/workflow?module=${module.id}`)}
                 className="group rounded-[1.5rem] border border-slate-800 bg-slate-950/90 p-5 text-left shadow-lg shadow-slate-950/20 transition hover:-translate-y-1 hover:border-emerald-500/30 hover:bg-slate-900 hover:shadow-emerald-500/10"
               >
-                <p className="text-xs uppercase tracking-[0.24em] text-emerald-300">{module.badge}</p>
-                <h3 className="mt-3 text-lg font-semibold text-white transition group-hover:text-emerald-200">{module.title}</h3>
+                <p className="text-xs uppercase tracking-[0.24em] text-indigo-300">{module.badge}</p>
+                <h3 className="mt-3 text-lg font-semibold text-white transition group-hover:text-indigo-200">{module.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-300">{module.subtitle}</p>
                 <p className="mt-4 text-sm leading-6 text-slate-400">{module.summary}</p>
-                <div className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">
+                <div className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-indigo-300">
                   Open page
                   <Workflow size={14} />
                 </div>
@@ -221,7 +221,7 @@ const Dashboard = () => {
             <div className="rounded-[2rem] border border-slate-800 bg-slate-900/95 p-5 shadow-2xl shadow-slate-950/20 lg:p-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                  <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">Open jobs</p>
+                  <p className="text-sm uppercase tracking-[0.3em] text-indigo-300">Open jobs</p>
                   <h2 className="mt-3 text-2xl font-semibold text-white">Recruiter favorites</h2>
                 </div>
                 <div className="rounded-full bg-slate-950/80 px-4 py-2 text-sm text-slate-300 ring-1 ring-white/10">
@@ -238,7 +238,7 @@ const Dashboard = () => {
                   >
                     <div className="flex items-center justify-between gap-3">
                       <div>
-                        <p className="text-sm font-medium text-cyan-300">{job.type || 'Full-time'}</p>
+                        <p className="text-sm font-medium text-indigo-300">{job.type || 'Full-time'}</p>
                         <h3 className="mt-3 text-lg font-semibold text-white">{job.title}</h3>
                       </div>
                       <span className="rounded-3xl bg-slate-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-300">
@@ -255,7 +255,7 @@ const Dashboard = () => {
 
             <aside className="space-y-5">
               <div className="rounded-[2rem] border border-slate-800 bg-slate-900/95 p-5 shadow-2xl shadow-slate-950/20 lg:p-6">
-                <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">Quick actions</p>
+                <p className="text-sm uppercase tracking-[0.3em] text-indigo-300">Quick actions</p>
                 <h2 className="mt-3 text-2xl font-semibold text-white">Jump to the clean pages</h2>
                 <div className="mt-6 grid gap-3">
                   {[
@@ -267,7 +267,7 @@ const Dashboard = () => {
                       key={item.path}
                       type="button"
                       onClick={() => navigate(item.path)}
-                      className="flex items-center justify-between rounded-3xl bg-slate-950/80 px-4 py-4 text-left text-sm font-semibold text-slate-200 ring-1 ring-white/5 transition hover:bg-slate-900 hover:text-cyan-300"
+                      className="flex items-center justify-between rounded-3xl bg-slate-950/80 px-4 py-4 text-left text-sm font-semibold text-slate-200 ring-1 ring-white/5 transition hover:bg-slate-900 hover:text-indigo-300"
                     >
                       <span>{item.label}</span>
                       <ArrowRight size={16} />
@@ -277,7 +277,7 @@ const Dashboard = () => {
               </div>
 
               <div className="rounded-[2rem] border border-slate-800 bg-slate-900/95 p-5 shadow-2xl shadow-slate-950/20 lg:p-6">
-                <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">Recent activity</p>
+                <p className="text-sm uppercase tracking-[0.3em] text-indigo-300">Recent activity</p>
                 <h2 className="mt-3 text-2xl font-semibold text-white">What changed</h2>
                 <div className="mt-6 space-y-4">
                   {recentApplications.length ? recentApplications.map((app) => (
