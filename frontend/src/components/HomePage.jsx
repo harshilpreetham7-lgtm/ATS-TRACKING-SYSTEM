@@ -41,12 +41,16 @@ const HomePage = () => {
                 Featured ATS
               </p>
 
+              <div className="inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-300">
+                Ready for HR demo review
+              </div>
+
               <div>
                 <h1 className="max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
-                  Open the ATS like a modern app, not a form page.
+                  Open the ATS like a premium hiring product, not a form page.
                 </h1>
                 <p className="mt-6 max-w-2xl text-base leading-7 text-slate-400 sm:text-lg">
-                  Built with a Play Store style opener, clean app-like sections, and separate pages for roles, pipeline, and workflows.
+                  Built with a polished opener, app-like sections, and distinct pages for roles, pipeline, and workflows so the product feels complete at first glance.
                 </p>
               </div>
 
@@ -87,6 +91,19 @@ const HomePage = () => {
                   <div key={item.title} className="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5 ring-1 ring-white/5">
                     <p className="text-xs uppercase tracking-[0.28em] text-cyan-300">{item.title}</p>
                     <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-3">
+                {[
+                  ['Polished UI', 'Dark gradients, soft depth, and sharp spacing.'],
+                  ['Workflow clarity', 'Recruiter actions are separated by stage.'],
+                  ['Review ready', 'Screens are structured for live presentation.'],
+                ].map(([label, detail]) => (
+                  <div key={label} className="rounded-2xl border border-slate-800 bg-slate-950/70 p-4 ring-1 ring-white/5">
+                    <p className="text-xs uppercase tracking-[0.24em] text-emerald-300">{label}</p>
+                    <p className="mt-2 text-sm text-slate-400">{detail}</p>
                   </div>
                 ))}
               </div>

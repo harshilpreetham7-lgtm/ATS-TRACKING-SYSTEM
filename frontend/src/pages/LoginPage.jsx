@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CheckCircle2 } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 
 const LoginPage = () => {
@@ -38,6 +39,10 @@ const LoginPage = () => {
       <div className="mx-auto grid min-h-screen max-w-[1440px] grid-cols-1 items-center gap-8 px-4 py-4 sm:px-6 lg:grid-cols-[1.35fr_0.9fr] lg:py-6">
         <section className="relative overflow-hidden rounded-[2rem] border border-slate-800 bg-slate-900/90 p-7 shadow-2xl shadow-slate-950/40 backdrop-blur-lg lg:p-10">
           <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-600/20 to-purple-600/10 blur-3xl animate-float" />
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-300">
+            <CheckCircle2 size={14} />
+            Built for recruiter demos and HR review
+          </div>
           <div className="inline-flex rounded-full bg-indigo-500/10 px-4 py-2 text-sm font-semibold text-indigo-300 ring-1 ring-indigo-500/20">
             Built for modern recruiting teams
           </div>
@@ -66,6 +71,19 @@ const LoginPage = () => {
               <li>• Real-time candidate updates and notifications.</li>
               <li>• Clean recruiter-first dashboard and job insights.</li>
             </ul>
+          </div>
+
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            {[
+              ['Fast', 'Launch in one click'],
+              ['Clear', 'Stages and actions are obvious'],
+              ['Professional', 'Looks presentation-ready'],
+            ].map(([title, text]) => (
+              <div key={title} className="rounded-2xl border border-slate-800 bg-slate-950/70 p-4 text-left ring-1 ring-white/5">
+                <p className="text-xs uppercase tracking-[0.24em] text-cyan-300">{title}</p>
+                <p className="mt-2 text-sm text-slate-400">{text}</p>
+              </div>
+            ))}
           </div>
         </section>
 

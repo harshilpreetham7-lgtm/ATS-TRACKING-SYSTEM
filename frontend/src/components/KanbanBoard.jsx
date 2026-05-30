@@ -38,9 +38,9 @@ const statusIcons = {
   rejected: Clock,
 };
 
-const KanbanBoard = ({ columns }) => {
+const KanbanBoard = ({ columns, selectedApplicationId, onSelectApplication }) => {
   return (
-    <div className="grid gap-4 xl:grid-cols-3">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
       {columns.map((column) => {
         const StatusIcon = statusIcons[column.id];
         return (
@@ -70,7 +70,17 @@ const KanbanBoard = ({ columns }) => {
                         <div
                           ref={dragProvided.innerRef}
                           {...dragProvided.draggableProps}
-                          className={`mb-3 rounded-[1.25rem] border-2 p-4 transition duration-300 ${statusStyles[column.id]} ${dragSnapshot.isDragging ? 'shadow-2xl shadow-cyan-500/30 scale-105 rotate-2' : 'scale-100 rotate-0'}`}>
+                          className={`mb-3 rounded-[1.25rem] border-2 p-4 transition duration-300 ${statusStyles[column.id]} ${selectedApplicationId === application._id ? 'ring-2 ring-cyan-300/70 border-cyan-400/60' : ''} ${dragSnapshot.isDragging ? 'shadow-2xl shadow-cyan-500/30 scale-105 rotate-2' : 'scale-100 rotate-0'}`}
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => onSelectApplication?.(application._id)}
+                          onKeyDown={(event) => {
+                            if (event.key === 'Enter' || event.key === ' ') {
+                              event.preventDefault();
+                              onSelectApplication?.(application._id);
+                            }
+                          }}
+                        >
                           <div className="flex items-start justify-between gap-3">
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2">

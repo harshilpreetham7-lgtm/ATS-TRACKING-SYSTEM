@@ -152,11 +152,14 @@ const Dashboard = () => {
             <Zap size={14} />
             Workspace
           </p>
+          <p className="mx-auto mt-4 inline-flex rounded-full border border-white/10 bg-slate-950/70 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-300 shadow-lg shadow-black/20">
+            Review-ready product flow for recruiters and hiring managers
+          </p>
           <h1 className="mt-6 text-4xl font-black tracking-tight text-white sm:text-5xl">
             ATS <span className="bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 bg-clip-text text-transparent">Workspace</span>
           </h1>
           <p className="mt-4 text-lg leading-8 text-slate-400">
-            Manage your hiring workflow, track applications, and build your team efficiently.
+            Manage your hiring workflow, track applications, and present a clear, high-trust recruiting product from the first click.
           </p>
         </section>
 
@@ -204,7 +207,7 @@ const Dashboard = () => {
               </div>
               <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-purple-200">Browse Roles</h3>
               <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                Explore all open positions and role details
+                Explore open positions with a polished card layout and clear role metadata.
               </p>
             </button>
 
@@ -221,7 +224,7 @@ const Dashboard = () => {
               </div>
               <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-cyan-200">Pipeline Board</h3>
               <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                Drag & drop candidates through hiring stages
+                Drag and drop candidates through stages with action-rich candidate details.
               </p>
             </button>
 

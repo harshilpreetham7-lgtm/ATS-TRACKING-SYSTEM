@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Briefcase, CheckCircle2, ListChecks, Sparkles, SlidersHorizontal } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Briefcase, CheckCircle2, ListChecks, ShieldCheck, Sparkles, SlidersHorizontal, Star } from 'lucide-react';
 import NavBar from '../components/NavBar';
 import { useAppStore } from '../store/useAppStore';
 import { workflowModules } from '../data/workflowModules';
@@ -28,6 +28,11 @@ const RolesPage = () => {
     return roles.filter((role) => role.engagement.toLowerCase().includes(roleFilter));
   }, [roleFilter, featuredRoles]);
 
+  const recommendedRoles = useMemo(() => {
+    const roles = displayedRoles.length ? displayedRoles : roleModule?.roles || [];
+    return roles.slice(0, 3);
+  }, [displayedRoles]);
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <NavBar user={user} onLogout={logout} onSync={loadBoard} />
@@ -43,15 +48,34 @@ const RolesPage = () => {
               <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-400">
                 Featured roles appear first, filters keep the grid clean, and every card opens a detail view with the exact fields the candidate must provide.
               </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                {[
+                  { icon: BadgeCheck, label: 'Verified roles' },
+                  { icon: ShieldCheck, label: 'Clean workflow' },
+                  { icon: Star, label: 'Review-ready experience' },
+                ].map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={item.label} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-slate-950/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-300">
+                      <Icon size={14} className="text-emerald-300" />
+                      {item.label}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-            <button
-              type="button"
-              onClick={() => navigate('/workflow?module=role-selection&role=' + selectedRole.id)}
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-50 shadow-lg shadow-emerald-500/35 transition hover:from-emerald-400 hover:to-teal-400 hover:shadow-emerald-500/45"
-            >
-              Open full detail page
-              <ArrowRight size={16} />
-            </button>
+            <div className="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-4 shadow-lg shadow-slate-950/20 ring-1 ring-white/5">
+              <p className="text-xs uppercase tracking-[0.24em] text-cyan-300">Candidate confidence</p>
+              <p className="mt-3 text-sm text-slate-300">Clear role cards, a detailed preview panel, and one-click workflow access make the platform feel ready for real hiring.</p>
+              <button
+                type="button"
+                onClick={() => navigate('/workflow?module=role-selection&role=' + selectedRole.id)}
+                className="mt-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-50 shadow-lg shadow-emerald-500/35 transition hover:from-emerald-400 hover:to-teal-400 hover:shadow-emerald-500/45"
+              >
+                Open full detail page
+                <ArrowRight size={16} />
+              </button>
+            </div>
           </div>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
@@ -63,6 +87,28 @@ const RolesPage = () => {
               <div key={item.label} className="rounded-[1.5rem] border border-slate-800 bg-slate-950/90 p-5 shadow-lg shadow-slate-950/20 ring-1 ring-white/5">
                 <p className="text-xs uppercase tracking-[0.26em] text-indigo-300">{item.label}</p>
                 <p className="mt-3 text-2xl font-semibold text-white">{item.value}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 grid gap-4 lg:grid-cols-3">
+            {[
+              {
+                title: 'Trust signal',
+                text: 'Candidates see role details, required fields, and next steps immediately so the platform feels structured and real.',
+              },
+              {
+                title: 'Selection clarity',
+                text: 'Featured roles, filters, and a fixed detail preview reduce uncertainty when choosing what to apply for.',
+              },
+              {
+                title: 'Professional finish',
+                text: 'Dark gradients, compact cards, and deliberate spacing give the product a polished hiring-suite look.',
+              },
+            ].map((item) => (
+              <div key={item.title} className="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5 ring-1 ring-white/5">
+                <p className="text-xs uppercase tracking-[0.26em] text-emerald-300">{item.title}</p>
+                <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
               </div>
             ))}
           </div>
@@ -105,15 +151,22 @@ const RolesPage = () => {
                         key={role.id}
                         type="button"
                         onClick={() => setSelectedRoleId(role.id)}
-                        className={`rounded-[1.5rem] border p-4 text-left shadow-lg shadow-slate-950/15 transition hover:-translate-y-1 ${active ? 'border-emerald-500/60 bg-emerald-500/10 ring-1 ring-emerald-500/20' : 'border-slate-800 bg-slate-950/90 hover:border-emerald-500/30 hover:bg-slate-900 hover:shadow-emerald-500/10'}`}
+                        className={`group relative overflow-hidden rounded-[1.6rem] border p-4 text-left shadow-lg shadow-slate-950/15 transition hover:-translate-y-1 ${active ? 'border-emerald-500/60 bg-emerald-500/10 ring-1 ring-emerald-500/20' : 'border-slate-800 bg-slate-950/90 hover:border-emerald-500/30 hover:bg-slate-900 hover:shadow-emerald-500/10'}`}
                       >
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/0 via-white/0 to-white/5 opacity-0 transition group-hover:opacity-100" />
                         <div className="flex items-start justify-between gap-3">
                           <Briefcase className={active ? 'text-emerald-300' : 'text-slate-500'} size={18} />
                           {active && <CheckCircle2 className="text-emerald-400" size={16} />}
                         </div>
-                        <h3 className="mt-4 text-lg font-semibold text-white">{role.label}</h3>
-                        <p className="mt-2 text-xs uppercase tracking-[0.22em] text-slate-400">{role.level} • {role.engagement}</p>
-                        <p className="mt-3 text-sm leading-6 text-slate-300">{role.summary}</p>
+                        <div className="relative z-10">
+                          <h3 className="mt-4 text-lg font-semibold text-white">{role.label}</h3>
+                          <p className="mt-2 text-xs uppercase tracking-[0.22em] text-slate-400">{role.level} • {role.engagement}</p>
+                          <p className="mt-3 text-sm leading-6 text-slate-300">{role.summary}</p>
+                          <div className="mt-4 flex flex-wrap gap-2">
+                            <span className="rounded-full bg-slate-900/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-300 ring-1 ring-white/5">Open role</span>
+                            <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-300 ring-1 ring-emerald-500/20">Trusted fit</span>
+                          </div>
+                        </div>
                       </button>
                     );
                   })}
@@ -136,15 +189,22 @@ const RolesPage = () => {
                         key={role.id}
                         type="button"
                         onClick={() => setSelectedRoleId(role.id)}
-                        className={`rounded-[1.5rem] border p-4 text-left shadow-lg shadow-slate-950/15 transition hover:-translate-y-1 ${active ? 'border-emerald-500/60 bg-emerald-500/10 ring-1 ring-emerald-500/20' : 'border-slate-800 bg-slate-950/90 hover:border-emerald-500/30 hover:bg-slate-900 hover:shadow-emerald-500/10'}`}
+                        className={`group relative overflow-hidden rounded-[1.6rem] border p-4 text-left shadow-lg shadow-slate-950/15 transition hover:-translate-y-1 ${active ? 'border-emerald-500/60 bg-emerald-500/10 ring-1 ring-emerald-500/20' : 'border-slate-800 bg-slate-950/90 hover:border-emerald-500/30 hover:bg-slate-900 hover:shadow-emerald-500/10'}`}
                       >
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/0 via-white/0 to-white/5 opacity-0 transition group-hover:opacity-100" />
                         <div className="flex items-start justify-between gap-3">
                           <Briefcase className={active ? 'text-emerald-300' : 'text-slate-500'} size={18} />
                           {active && <CheckCircle2 className="text-emerald-400" size={16} />}
                         </div>
-                        <h3 className="mt-4 text-lg font-semibold text-white">{role.label}</h3>
-                        <p className="mt-2 text-xs uppercase tracking-[0.22em] text-slate-400">{role.level} • {role.engagement}</p>
-                        <p className="mt-3 text-sm leading-6 text-slate-300">{role.summary}</p>
+                        <div className="relative z-10">
+                          <h3 className="mt-4 text-lg font-semibold text-white">{role.label}</h3>
+                          <p className="mt-2 text-xs uppercase tracking-[0.22em] text-slate-400">{role.level} • {role.engagement}</p>
+                          <p className="mt-3 text-sm leading-6 text-slate-300">{role.summary}</p>
+                          <div className="mt-4 flex flex-wrap gap-2">
+                            <span className="rounded-full bg-slate-900/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-300 ring-1 ring-white/5">Open role</span>
+                            <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-300 ring-1 ring-emerald-500/20">Trusted fit</span>
+                          </div>
+                        </div>
                       </button>
                     );
                   })}
@@ -205,6 +265,13 @@ const RolesPage = () => {
                 </div>
               </div>
 
+              <div className="mt-6 rounded-[1.5rem] border border-emerald-500/20 bg-emerald-500/5 p-4 ring-1 ring-emerald-500/10">
+                <p className="text-xs uppercase tracking-[0.24em] text-emerald-300">Why this role fits</p>
+                <p className="mt-3 text-sm leading-6 text-slate-300">
+                  {selectedRole?.summary} The platform makes this role feel credible by showing the level, engagement type, expected submission fields, and the full workflow before the candidate applies.
+                </p>
+              </div>
+
               <div className="mt-6 flex flex-wrap gap-3">
                 <button
                   type="button"
@@ -223,6 +290,39 @@ const RolesPage = () => {
                   Reset filters
                 </button>
               </div>
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-[2rem] border border-slate-800 bg-slate-900/80 p-5 shadow-2xl shadow-slate-950/24 ring-1 ring-white/5">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.3em] text-cyan-300">Recommended roles</p>
+                <h2 className="mt-3 text-2xl font-semibold text-white">A cleaner starting point for candidates</h2>
+              </div>
+              <p className="text-sm text-slate-400">Roles shown based on the current filter</p>
+            </div>
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
+              {recommendedRoles.map((role, index) => (
+                <button
+                  key={role.id}
+                  type="button"
+                  onClick={() => setSelectedRoleId(role.id)}
+                  className="group rounded-[1.5rem] border border-slate-800 bg-slate-950/90 p-5 text-left transition hover:-translate-y-1 hover:border-cyan-500/40 hover:shadow-lg hover:shadow-cyan-500/10"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="text-xs uppercase tracking-[0.24em] text-slate-500">0{index + 1}</p>
+                    <span className="rounded-full bg-cyan-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-300 ring-1 ring-cyan-500/20">
+                      Recommended
+                    </span>
+                  </div>
+                  <h3 className="mt-4 text-lg font-semibold text-white">{role.label}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">{role.summary}</p>
+                  <div className="mt-4 flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.22em] text-slate-300">
+                    <span className="rounded-full bg-slate-900 px-3 py-1 ring-1 ring-white/5">{role.level}</span>
+                    <span className="rounded-full bg-slate-900 px-3 py-1 ring-1 ring-white/5">{role.engagement}</span>
+                  </div>
+                </button>
+              ))}
             </div>
           </div>
         </section>

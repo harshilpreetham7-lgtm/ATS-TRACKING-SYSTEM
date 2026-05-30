@@ -17,27 +17,32 @@ function App() {
     <BrowserRouter>
       <ErrorBoundary>
         <NotificationCenter />
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route
-            path="/dashboard"
-            element={token ? <Dashboard /> : <Navigate replace to="/login" />}
-          />
-          <Route
-            path="/roles"
-            element={token ? <RolesPage /> : <Navigate replace to="/login" />}
-          />
-          <Route
-            path="/pipeline"
-            element={token ? <PipelinePage /> : <Navigate replace to="/login" />}
-          />
-          <Route
-            path="/workflow"
-            element={token ? <WorkflowWorkspacePage /> : <Navigate replace to="/login" />}
-          />
-          <Route path="/" element={<HomePage />} />
-          <Route path="*" element={<Navigate replace to="/" />} />
-        </Routes>
+        <div className="min-h-screen">
+          <div className="pointer-events-none fixed left-4 top-4 z-40 hidden rounded-full border border-white/10 bg-slate-950/70 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-300 shadow-2xl shadow-black/20 backdrop-blur md:block">
+            HR review ready
+          </div>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/dashboard"
+              element={token ? <Dashboard /> : <Navigate replace to="/login" />}
+            />
+            <Route
+              path="/roles"
+              element={token ? <RolesPage /> : <Navigate replace to="/login" />}
+            />
+            <Route
+              path="/pipeline"
+              element={token ? <PipelinePage /> : <Navigate replace to="/login" />}
+            />
+            <Route
+              path="/workflow"
+              element={token ? <WorkflowWorkspacePage /> : <Navigate replace to="/login" />}
+            />
+            <Route path="/" element={<HomePage />} />
+            <Route path="*" element={<Navigate replace to="/" />} />
+          </Routes>
+        </div>
       </ErrorBoundary>
     </BrowserRouter>
   );

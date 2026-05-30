@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { ChevronRight, CheckCircle2, Clock, FileText, Briefcase, Users, PenTool, BadgeCheck, XCircle } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { ChevronRight, CheckCircle2, Clock, FileText, Briefcase, Users, PenTool, BadgeCheck, XCircle, MapPin, Save, CalendarDays } from 'lucide-react';
+import { useAppStore } from '../store/useAppStore';
 
 const iconMap = {
   role: Briefcase,
@@ -21,6 +22,29 @@ const accentMap = {
   amber: 'border-amber-500/30 bg-amber-500/10 text-amber-200 ring-amber-500/20',
 };
 
+const locationSuggestions = [
+  'Remote',
+  'New York, NY',
+  'Newark, NJ',
+  'New Orleans, LA',
+  'New Delhi, India',
+  'Newcastle, UK',
+  'San Francisco, CA',
+  'San Jose, CA',
+  'San Diego, CA',
+  'Seattle, WA',
+  'Salt Lake City, UT',
+  'London, UK',
+  'Los Angeles, CA',
+  'Boston, MA',
+  'Berlin, Germany',
+  'Bangalore, India',
+  'Austin, TX',
+  'Chicago, IL',
+  'Toronto, Canada',
+  'Tokyo, Japan',
+];
+
 const WorkflowModuleExplorer = ({
   modules,
   activeModuleId,
@@ -31,15 +55,18 @@ const WorkflowModuleExplorer = ({
   onSelectRole,
   mode = 'overlay',
 }) => {
+  const { savedWorkflowModules, saveWorkflowModuleDetails, clearWorkflowModuleDetails } = useAppStore();
   const [formValues, setFormValues] = useState({});
+  const [activeSuggestionField, setActiveSuggestionField] = useState(null);
   const activeModule = modules.find((module) => module.id === activeModuleId) || modules[0];
   const ActiveIcon = iconMap[activeModule.icon] || Briefcase;
+  const savedModule = savedWorkflowModules?.[activeModuleId] || null;
 
   useEffect(() => {
     const nextValues = {};
     (activeModule.fields || []).forEach((field) => {
-      // Prefill from field default, but override from selectedRole when available
-      let value = field.defaultValue || '';
+      // Prefill from saved values, then selected role, then field default.
+      let value = savedModule?.values?.[field.name] ?? field.defaultValue ?? '';
       if (selectedRole) {
         if (field.name === 'roleTitle') value = selectedRole.label || value;
         if (field.name === 'level') value = selectedRole.level || value;
@@ -49,10 +76,26 @@ const WorkflowModuleExplorer = ({
       nextValues[field.name] = value;
     });
     setFormValues(nextValues);
-  }, [activeModuleId, selectedRole]);
+  }, [activeModuleId, selectedRole, savedModule]);
 
   const updateField = (name, value) => {
     setFormValues((current) => ({ ...current, [name]: value }));
+  };
+
+  const locationQuery = String(formValues.location || '').trim().toLowerCase();
+  const matchedLocations = useMemo(() => {
+    if (!locationQuery) return locationSuggestions.slice(0, 8);
+    return locationSuggestions.filter((item) => item.toLowerCase().startsWith(locationQuery)).slice(0, 8);
+  }, [locationQuery]);
+
+  const handleSaveModuleDetails = () => {
+    const roleLabel = selectedRole?.label || formValues.roleTitle || activeModule.title;
+    saveWorkflowModuleDetails(activeModule.id, {
+      title: activeModule.title,
+      roleLabel,
+      roleType: selectedRoleType,
+      values: formValues,
+    });
   };
 
   return (
@@ -77,6 +120,10 @@ const WorkflowModuleExplorer = ({
               {modules.map((module) => {
                 const ModuleIcon = iconMap[module.icon] || Briefcase;
                 const isActive = module.id === activeModule.id;
+                const saved = savedWorkflowModules?.[module.id];
+                const hasSavedDetails = Boolean(saved);
+                const preview = saved ? (saved.roleLabel || saved.values?.location || Object.values(saved.values || {})[0] || '') : '';
+                const previewShort = preview && preview.length > 20 ? preview.slice(0, 20) + '…' : preview;
                 return (
                   <button
                     key={module.id}
@@ -89,9 +136,33 @@ const WorkflowModuleExplorer = ({
                         <ModuleIcon size={18} />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="flex items-center justify-between gap-3">
-                          <p className="text-sm font-semibold text-white">{module.title}</p>
-                          <ChevronRight size={16} className={`${isActive ? 'text-cyan-300' : 'text-slate-500'} transition group-hover:translate-x-1`} />
+                          <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-3">
+                            <p className="text-sm font-semibold text-white">{module.title}</p>
+                            {hasSavedDetails && previewShort && (
+                              <span className="text-xs text-slate-300">• {previewShort}</span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {hasSavedDetails && (
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (module.id !== activeModule.id) {
+                                    onSelectModule(module.id);
+                                  } else {
+                                    // load saved values into the active form
+                                    setFormValues(saved?.values || {});
+                                  }
+                                }}
+                                className="rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-200 ring-1 ring-emerald-500/20 hover:bg-emerald-500/20 transition"
+                              >
+                                Saved
+                              </button>
+                            )}
+                            <ChevronRight size={16} className={`${isActive ? 'text-cyan-300' : 'text-slate-500'} transition group-hover:translate-x-1`} />
+                          </div>
                         </div>
                         <p className="mt-1 text-xs uppercase tracking-[0.24em] text-slate-500">{module.subtitle}</p>
                         <p className="mt-3 text-sm leading-6 text-slate-400">{module.summary}</p>
@@ -201,7 +272,7 @@ const WorkflowModuleExplorer = ({
                 </div>
               )}
 
-              <div className="mt-5 rounded-[1.5rem] bg-slate-950/80 p-4 ring-1 ring-white/5">
+                <div className="mt-5 rounded-[1.5rem] bg-slate-950/80 p-4 ring-1 ring-white/5">
                 <p className="text-xs uppercase tracking-[0.24em] text-cyan-300">{activeModule.formTitle || 'Details required'}</p>
                 <div className="mt-4 grid gap-4 md:grid-cols-2">
                   {(activeModule.fields || []).map((field) => (
@@ -226,6 +297,38 @@ const WorkflowModuleExplorer = ({
                           placeholder={field.placeholder}
                           className="w-full rounded-3xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-cyan-500"
                         />
+                      ) : field.name === 'location' ? (
+                        <div className="relative">
+                          <input
+                            type={field.type || 'text'}
+                            value={formValues[field.name] || ''}
+                            onFocus={() => setActiveSuggestionField('location')}
+                            onBlur={() => setTimeout(() => setActiveSuggestionField(null), 120)}
+                            onChange={(event) => updateField(field.name, event.target.value)}
+                            placeholder={field.placeholder}
+                            className="w-full rounded-3xl border border-slate-700 bg-slate-950 px-4 py-3 pl-11 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-cyan-500"
+                          />
+                          <MapPin size={16} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                          {activeSuggestionField === 'location' && matchedLocations.length > 0 && (
+                            <div className="absolute z-20 mt-2 max-h-56 w-full overflow-auto rounded-3xl border border-slate-700 bg-slate-950 shadow-2xl shadow-slate-950/40">
+                              {matchedLocations.map((item) => (
+                                <button
+                                  key={item}
+                                  type="button"
+                                  onMouseDown={(event) => event.preventDefault()}
+                                  onClick={() => {
+                                    updateField('location', item);
+                                    setActiveSuggestionField(null);
+                                  }}
+                                  className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-slate-200 transition hover:bg-slate-900 hover:text-cyan-300"
+                                >
+                                  <MapPin size={14} className="text-cyan-400" />
+                                  {item}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       ) : (
                         <input
                           type={field.type || 'text'}
@@ -240,10 +343,62 @@ const WorkflowModuleExplorer = ({
                 </div>
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                   <p className="text-sm text-slate-400">Fill these fields to complete the current module before moving the candidate forward.</p>
-                  <button type="button" className="rounded-full bg-gradient-to-r from-cyan-500 to-sky-500 px-5 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:from-cyan-400 hover:to-sky-400">
+                  <button
+                    type="button"
+                    onClick={handleSaveModuleDetails}
+                    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 to-sky-500 px-5 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:from-cyan-400 hover:to-sky-400"
+                  >
+                    <Save size={14} />
                     Save module details
                   </button>
                 </div>
+              </div>
+
+              <div className="mt-5 rounded-[1.5rem] bg-slate-950/80 p-4 ring-1 ring-white/5">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <p className="text-xs uppercase tracking-[0.24em] text-cyan-300">Saved details</p>
+                  {savedModule?.savedAt && (
+                    <span className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-3 py-1 text-xs text-slate-300 ring-1 ring-white/10">
+                      <CalendarDays size={14} />
+                      {new Date(savedModule.savedAt).toLocaleString()}
+                    </span>
+                  )}
+                </div>
+
+                {savedModule ? (
+                  <div className="mt-4 space-y-3">
+                    <div className="flex flex-wrap justify-end gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setFormValues(savedModule.values || {})}
+                        className="rounded-full border border-slate-700 bg-slate-900/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-200 transition hover:border-cyan-500/40 hover:text-cyan-300"
+                      >
+                        Load saved values
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => clearWorkflowModuleDetails(activeModule.id)}
+                        className="rounded-full border border-rose-500/30 bg-rose-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-rose-200 transition hover:border-rose-400/60 hover:bg-rose-500/20"
+                      >
+                        Clear saved details
+                      </button>
+                    </div>
+                    <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-4">
+                      <p className="text-sm font-semibold text-white">{savedModule.roleLabel}</p>
+                      <p className="mt-1 text-xs uppercase tracking-[0.24em] text-slate-500">{savedModule.title}</p>
+                      <div className="mt-3 grid gap-2 text-sm text-slate-300">
+                        {Object.entries(savedModule.values || {}).map(([key, value]) => (
+                          <div key={key} className="flex items-start justify-between gap-3 rounded-2xl bg-slate-950/80 px-3 py-2">
+                            <span className="capitalize text-slate-400">{key.replace(/([A-Z])/g, ' $1')}</span>
+                            <span className="text-right text-slate-100">{String(value || '-')}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="mt-3 text-sm text-slate-400">No saved details yet. Fill the fields above and save them to see them here.</p>
+                )}
               </div>
             </div>
           </div>

@@ -4,12 +4,14 @@ import { connectSocket, disconnectSocket } from '../socket';
 
 const initialUser = JSON.parse(localStorage.getItem('ats_user') || 'null');
 const initialToken = localStorage.getItem('ats_token') || '';
+const initialSavedWorkflowModules = JSON.parse(localStorage.getItem('ats_saved_workflow_modules') || '{}');
 
 export const useAppStore = create((set, get) => ({
   token: initialToken,
   user: initialUser,
   jobs: [],
   applications: [],
+  savedWorkflowModules: initialSavedWorkflowModules,
   notifications: [],
   loading: false,
   error: null,
@@ -42,10 +44,42 @@ export const useAppStore = create((set, get) => ({
     setAuthToken(token);
     set({ token });
   },
+  saveWorkflowModuleDetails: (moduleId, payload) => {
+    set((state) => {
+      const nextValue = {
+        ...state.savedWorkflowModules,
+        [moduleId]: {
+          ...payload,
+          savedAt: new Date().toISOString(),
+        },
+      };
+      localStorage.setItem('ats_saved_workflow_modules', JSON.stringify(nextValue));
+      return { savedWorkflowModules: nextValue };
+    });
+    get().pushNotification({
+      type: 'success',
+      title: 'Module saved',
+      message: 'Workflow module details have been saved.',
+    });
+  },
+  clearWorkflowModuleDetails: (moduleId) => {
+    set((state) => {
+      const nextValue = { ...state.savedWorkflowModules };
+      delete nextValue[moduleId];
+      localStorage.setItem('ats_saved_workflow_modules', JSON.stringify(nextValue));
+      return { savedWorkflowModules: nextValue };
+    });
+    get().pushNotification({
+      type: 'info',
+      title: 'Module cleared',
+      message: 'Saved workflow module details were removed.',
+    });
+  },
   logout: () => {
     setAuthToken('');
     localStorage.removeItem('ats_user');
-    set({ token: '', user: null, jobs: [], applications: [], notifications: [] });
+    localStorage.removeItem('ats_saved_workflow_modules');
+    set({ token: '', user: null, jobs: [], applications: [], savedWorkflowModules: {}, notifications: [] });
     disconnectSocket();
   },
   register: async (payload) => {
@@ -106,10 +140,87 @@ export const useAppStore = create((set, get) => ({
       set({ loading: false });
     }
   },
-  updateApplicationStatus: async (applicationId, status) => {
+  saveApplicationDetails: async (applicationId, details) => {
     set({ loading: true, error: null });
     try {
-      const response = await api.put(`/applications/${applicationId}/status`, { status });
+      const response = await api.put(`/applications/${applicationId}/details`, { details });
+      set((state) => ({
+        applications: state.applications.map((app) => (app._id === applicationId ? response.data : app)),
+      }));
+      get().pushNotification({
+        type: 'success',
+        title: 'Candidate details saved',
+        message: 'Applied-stage details were recorded for this candidate.',
+      });
+      return true;
+    } catch (error) {
+      set({ error: error.response?.data?.message || error.message });
+      get().pushNotification({
+        type: 'error',
+        title: 'Save failed',
+        message: error.response?.data?.message || error.message,
+      });
+      return false;
+    } finally {
+      set({ loading: false });
+    }
+  },
+  requestInterview: async (applicationId, payload) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await api.put(`/applications/${applicationId}/interview-request`, payload);
+      set((state) => ({
+        applications: state.applications.map((app) => (app._id === applicationId ? response.data : app)),
+      }));
+      get().pushNotification({
+        type: 'info',
+        title: 'Interview request sent',
+        message: 'Interview form and exam link were shared with the candidate email.',
+      });
+      return true;
+    } catch (error) {
+      set({ error: error.response?.data?.message || error.message });
+      get().pushNotification({
+        type: 'error',
+        title: 'Interview request failed',
+        message: error.response?.data?.message || error.message,
+      });
+      return false;
+    } finally {
+      set({ loading: false });
+    }
+  },
+  submitInterviewResult: async (applicationId, payload) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await api.put(`/applications/${applicationId}/interview-result`, payload);
+      set((state) => ({
+        applications: state.applications.map((app) => (app._id === applicationId ? response.data : app)),
+      }));
+      get().pushNotification({
+        type: payload?.passed ? 'success' : 'warning',
+        title: payload?.passed ? 'Candidate passed interview' : 'Candidate rejected',
+        message: payload?.passed
+          ? 'Offer letter flow has been triggered for the candidate email.'
+          : 'Candidate status updated to rejected with interview feedback.',
+      });
+      return true;
+    } catch (error) {
+      set({ error: error.response?.data?.message || error.message });
+      get().pushNotification({
+        type: 'error',
+        title: 'Interview result update failed',
+        message: error.response?.data?.message || error.message,
+      });
+      return false;
+    } finally {
+      set({ loading: false });
+    }
+  },
+  updateApplicationStatus: async (applicationId, status, workflowUpdates = {}) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await api.put(`/applications/${applicationId}/status`, { status, ...workflowUpdates });
       set((state) => ({
         applications: state.applications.map((app) =>
           app._id === applicationId ? response.data : app
@@ -149,6 +260,10 @@ export const useAppStore = create((set, get) => ({
         set({ applications: reordered.concat(current.filter((a) => !orderedIds.includes(a._id))) });
       }
       get().pushNotification({ type: 'success', title: 'Order saved', message: 'Candidate order persisted.' });
+      // optionally reload board to sync full state
+      if (typeof get().loadBoard === 'function') {
+        try { await get().loadBoard(); } catch (e) { /* ignore */ }
+      }
       return true;
     } catch (error) {
       set({ error: error.response?.data?.message || error.message });
