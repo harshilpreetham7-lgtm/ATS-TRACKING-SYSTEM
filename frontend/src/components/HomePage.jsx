@@ -9,7 +9,6 @@ const HomePage = () => {
   const highlights = [
     { title: 'Live hiring', description: 'Real-time pipeline updates and clean candidate flow.' },
     { title: 'Role catalogs', description: 'Browse roles like featured apps with focused details.' },
-    { title: 'Workflow pages', description: 'Open module-specific screens for deeper actions.' },
   ];
 
   const featureCards = [
@@ -29,6 +28,12 @@ const HomePage = () => {
       icon: Workflow,
     },
   ];
+
+  const launchLogin = () => {
+    useAppStore.getState().setToken('');
+    useAppStore.getState().setUser(null);
+    navigate('/login', { replace: true });
+  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -66,7 +71,7 @@ const HomePage = () => {
               <div className="flex flex-wrap gap-3">
                 <button
                   type="button"
-                  onClick={() => navigate('/login')}
+                  onClick={launchLogin}
                   className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-slate-50 shadow-lg shadow-indigo-500/30 transition hover:from-indigo-400 hover:to-cyan-400 hover:shadow-indigo-500/40"
                 >
                   Launch app
@@ -82,28 +87,14 @@ const HomePage = () => {
                 </button>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-3">
+              <div className="grid gap-4 sm:grid-cols-2">
                 {[
-                  { title: 'Home', text: 'A clean app launch screen with a premium look.' },
-                  { title: 'Login', text: 'Secure sign-in with recruiter or candidate access.' },
-                  { title: 'Workspace', text: 'Roles, pipeline, and workflow pages stay separate.' },
+                  { title: 'Home', text: 'A clean app launch screen.' },
+                  { title: 'Login', text: 'Secure sign-in for recruiter or candidate access.' },
                 ].map((item) => (
                   <div key={item.title} className="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-5 ring-1 ring-white/5">
                     <p className="text-xs uppercase tracking-[0.28em] text-cyan-300">{item.title}</p>
                     <p className="mt-3 text-sm leading-6 text-slate-400">{item.text}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-3">
-                {[
-                  ['Polished UI', 'Dark gradients, soft depth, and sharp spacing.'],
-                  ['Workflow clarity', 'Recruiter actions are separated by stage.'],
-                  ['Review ready', 'Screens are structured for live presentation.'],
-                ].map(([label, detail]) => (
-                  <div key={label} className="rounded-2xl border border-slate-800 bg-slate-950/70 p-4 ring-1 ring-white/5">
-                    <p className="text-xs uppercase tracking-[0.24em] text-emerald-300">{label}</p>
-                    <p className="mt-2 text-sm text-slate-400">{detail}</p>
                   </div>
                 ))}
               </div>

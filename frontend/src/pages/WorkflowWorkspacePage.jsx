@@ -29,14 +29,14 @@ const WorkflowWorkspacePage = () => {
         <button
           type="button"
           onClick={() => navigate('/dashboard')}
-          className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/80 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-indigo-500/40 hover:text-indigo-300"
+          className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900/80 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-slate-500 hover:text-white"
         >
           <ArrowLeft size={16} />
           Back to dashboard
         </button>
         <div className="text-right">
-          <p className="text-xs uppercase tracking-[0.3em] text-indigo-300">Full-page workspace</p>
-          <h1 className="mt-2 text-lg font-semibold text-white sm:text-2xl">Workflow module details</h1>
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Full-page workspace</p>
+          <h1 className="mt-2 text-lg font-semibold text-white sm:text-2xl">Workflow details</h1>
         </div>
       </div>
 
