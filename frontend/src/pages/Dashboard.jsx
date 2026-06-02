@@ -148,42 +148,42 @@ const Dashboard = () => {
       <main className="mx-auto max-w-[1440px] px-4 pb-16 pt-6 sm:px-6 lg:px-8 lg:pb-20 lg:pt-8">
         {/* Hero Section */}
         <section className="mb-12 text-center">
-          <p className="inline-flex items-center gap-2 rounded-full bg-slate-900/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-400 ring-1 ring-slate-700/50">
+          <p className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-300 ring-1 ring-emerald-500/30">
             <Zap size={14} />
             Workspace
           </p>
-          <p className="mx-auto mt-4 inline-flex rounded-full border border-slate-700 bg-slate-900/70 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">
-            Recruitment platform
+          <p className="mx-auto mt-4 inline-flex rounded-full border border-white/10 bg-slate-950/70 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-300 shadow-lg shadow-black/20">
+            Review-ready product flow for recruiters and hiring managers
           </p>
-          <h1 className="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-            ATS Dashboard
+          <h1 className="mt-6 text-4xl font-black tracking-tight text-white sm:text-5xl">
+            ATS <span className="bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 bg-clip-text text-transparent">Workspace</span>
           </h1>
           <p className="mt-4 text-lg leading-8 text-slate-400">
-            Manage roles, candidates, and hiring workflows in one simple workspace.
+            Manage your hiring workflow, track applications, and present a clear, high-trust recruiting product from the first click.
           </p>
         </section>
 
         {/* Quick Stats */}
         <div className="mb-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-[1.8rem] border border-slate-800 bg-slate-900/90 p-6">
-            <p className="text-sm uppercase tracking-[0.24em] text-slate-400 font-semibold">Open roles</p>
-            <p className="mt-3 text-3xl font-semibold text-white">{totalJobs}</p>
-            <p className="mt-2 text-xs text-slate-500">Active positions</p>
+          <div className="rounded-[1.8rem] border border-indigo-500/40 bg-gradient-to-br from-indigo-950/60 to-indigo-950/20 p-6 shadow-lg shadow-indigo-950/30">
+            <p className="text-sm uppercase tracking-[0.24em] text-indigo-300 font-semibold">Open roles</p>
+            <p className="mt-3 text-3xl font-black text-white">{totalJobs}</p>
+            <p className="mt-2 text-xs text-slate-400">Active positions</p>
           </div>
-          <div className="rounded-[1.8rem] border border-slate-800 bg-slate-900/90 p-6">
-            <p className="text-sm uppercase tracking-[0.24em] text-slate-400 font-semibold">Applications</p>
-            <p className="mt-3 text-3xl font-semibold text-white">{totalApplications}</p>
-            <p className="mt-2 text-xs text-slate-500">In pipeline</p>
+          <div className="rounded-[1.8rem] border border-rose-500/40 bg-gradient-to-br from-rose-950/60 to-rose-950/20 p-6 shadow-lg shadow-rose-950/30">
+            <p className="text-sm uppercase tracking-[0.24em] text-rose-300 font-semibold">Applications</p>
+            <p className="mt-3 text-3xl font-black text-white">{totalApplications}</p>
+            <p className="mt-2 text-xs text-slate-400">In pipeline</p>
           </div>
-          <div className="rounded-[1.8rem] border border-slate-800 bg-slate-900/90 p-6">
-            <p className="text-sm uppercase tracking-[0.24em] text-slate-400 font-semibold">Shortlisted</p>
-            <p className="mt-3 text-3xl font-semibold text-white">{statusCount.shortlisted}</p>
-            <p className="mt-2 text-xs text-slate-500">Ready to interview</p>
+          <div className="rounded-[1.8rem] border border-amber-500/40 bg-gradient-to-br from-amber-950/60 to-amber-950/20 p-6 shadow-lg shadow-amber-950/30">
+            <p className="text-sm uppercase tracking-[0.24em] text-amber-300 font-semibold">Shortlisted</p>
+            <p className="mt-3 text-3xl font-black text-white">{statusCount.shortlisted}</p>
+            <p className="mt-2 text-xs text-slate-400">Ready to interview</p>
           </div>
-          <div className="rounded-[1.8rem] border border-slate-800 bg-slate-900/90 p-6">
-            <p className="text-sm uppercase tracking-[0.24em] text-slate-400 font-semibold">Conversion</p>
-            <p className="mt-3 text-3xl font-semibold text-white">{conversionRate}%</p>
-            <p className="mt-2 text-xs text-slate-500">Offer rate</p>
+          <div className="rounded-[1.8rem] border border-emerald-500/40 bg-gradient-to-br from-emerald-950/60 to-emerald-950/20 p-6 shadow-lg shadow-emerald-950/30">
+            <p className="text-sm uppercase tracking-[0.24em] text-emerald-300 font-semibold">Conversion</p>
+            <p className="mt-3 text-3xl font-black text-white">{conversionRate}%</p>
+            <p className="mt-2 text-xs text-slate-400">Offer rate</p>
           </div>
         </div>
 
@@ -197,102 +197,102 @@ const Dashboard = () => {
             {/* Roles Module */}
             <button
               onClick={() => navigate('/roles')}
-              className="group rounded-[2rem] border border-slate-800 bg-slate-900/80 p-6 text-left transition hover:border-slate-700 hover:bg-slate-900"
+              className="group rounded-[2rem] border border-purple-500/40 bg-gradient-to-br from-purple-950/40 to-purple-950/10 p-6 text-left shadow-lg shadow-purple-950/20 transition hover:-translate-y-1 hover:border-purple-500/60 hover:shadow-purple-500/30"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="rounded-[1.2rem] bg-slate-900/80 p-4">
-                  <Briefcase className="text-slate-400" size={28} />
+                <div className="rounded-[1.2rem] bg-gradient-to-br from-purple-500 to-purple-600 p-4 shadow-lg shadow-purple-500/40">
+                  <Briefcase className="text-white" size={28} />
                 </div>
-                <span className="text-sm font-bold text-slate-600">1</span>
+                <span className="text-sm font-bold text-slate-400">1</span>
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-slate-100">Browse Roles</h3>
+              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-purple-200">Browse Roles</h3>
               <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                Explore open positions with role details.
+                Explore open positions with a polished card layout and clear role metadata.
               </p>
             </button>
 
             {/* Pipeline Module */}
             <button
               onClick={() => navigate('/pipeline')}
-              className="group rounded-[2rem] border border-slate-800 bg-slate-900/80 p-6 text-left transition hover:border-slate-700 hover:bg-slate-900"
+              className="group rounded-[2rem] border border-cyan-500/40 bg-gradient-to-br from-cyan-950/40 to-cyan-950/10 p-6 text-left shadow-lg shadow-cyan-950/20 transition hover:-translate-y-1 hover:border-cyan-500/60 hover:shadow-cyan-500/30"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="rounded-[1.2rem] bg-slate-900/80 p-4">
-                  <Brain className="text-slate-400" size={28} />
+                <div className="rounded-[1.2rem] bg-gradient-to-br from-cyan-500 to-cyan-600 p-4 shadow-lg shadow-cyan-500/40">
+                  <Brain className="text-white" size={28} />
                 </div>
-                <span className="text-sm font-bold text-slate-600">2</span>
+                <span className="text-sm font-bold text-slate-400">2</span>
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-slate-100">Pipeline Board</h3>
+              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-cyan-200">Pipeline Board</h3>
               <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                Manage candidates through interview stages.
+                Drag and drop candidates through stages with action-rich candidate details.
               </p>
             </button>
 
             {/* Workflow Module */}
             <button
               onClick={() => navigate('/workflow?module=candidate-intake')}
-              className="group rounded-[2rem] border border-slate-800 bg-slate-900/80 p-6 text-left transition hover:border-slate-700 hover:bg-slate-900"
+              className="group rounded-[2rem] border border-amber-500/40 bg-gradient-to-br from-amber-950/40 to-amber-950/10 p-6 text-left shadow-lg shadow-amber-950/20 transition hover:-translate-y-1 hover:border-amber-500/60 hover:shadow-amber-500/30"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="rounded-[1.2rem] bg-slate-900/80 p-4">
-                  <Zap className="text-slate-400" size={28} />
+                <div className="rounded-[1.2rem] bg-gradient-to-br from-amber-500 to-amber-600 p-4 shadow-lg shadow-amber-500/40">
+                  <Zap className="text-white" size={28} />
                 </div>
-                <span className="inline-flex items-center rounded-full bg-slate-800 px-2 py-1 text-xs font-bold text-slate-400 ring-1 ring-slate-700">PRO</span>
+                <span className="inline-flex items-center rounded-full bg-amber-500/20 px-2 py-1 text-xs font-bold text-amber-300 ring-1 ring-amber-500/40">PRO</span>
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-slate-100">Workflow Forms</h3>
+              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-amber-200">Workflow Forms</h3>
               <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                Create structured workflows for processes
+                Create structured workflows for any process
               </p>
             </button>
 
             {/* Analytics Module */}
             <button
               onClick={() => navigate('/pipeline')}
-              className="group rounded-[2rem] border border-slate-800 bg-slate-900/80 p-6 text-left transition hover:border-slate-700 hover:bg-slate-900"
+              className="group rounded-[2rem] border border-emerald-500/40 bg-gradient-to-br from-emerald-950/40 to-emerald-950/10 p-6 text-left shadow-lg shadow-emerald-950/20 transition hover:-translate-y-1 hover:border-emerald-500/60 hover:shadow-emerald-500/30"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="rounded-[1.2rem] bg-slate-900/80 p-4">
-                  <BarChart3 className="text-slate-400" size={28} />
+                <div className="rounded-[1.2rem] bg-gradient-to-br from-emerald-500 to-emerald-600 p-4 shadow-lg shadow-emerald-500/40">
+                  <BarChart3 className="text-white" size={28} />
                 </div>
-                <span className="text-sm font-bold text-slate-600">4</span>
+                <span className="text-sm font-bold text-slate-400">4</span>
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-slate-100">Analytics</h3>
+              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-emerald-200">Analytics</h3>
               <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                Track metrics and hiring insights
+                Track pipeline metrics and hiring insights
               </p>
             </button>
 
             {/* Recent Activity */}
             <button
               onClick={() => navigate('/pipeline')}
-              className="group rounded-[2rem] border border-slate-800 bg-slate-900/80 p-6 text-left transition hover:border-slate-700 hover:bg-slate-900"
+              className="group rounded-[2rem] border border-rose-500/40 bg-gradient-to-br from-rose-950/40 to-rose-950/10 p-6 text-left shadow-lg shadow-rose-950/20 transition hover:-translate-y-1 hover:border-rose-500/60 hover:shadow-rose-500/30"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="rounded-[1.2rem] bg-slate-900/80 p-4">
-                  <TrendingUp className="text-slate-400" size={28} />
+                <div className="rounded-[1.2rem] bg-gradient-to-br from-rose-500 to-rose-600 p-4 shadow-lg shadow-rose-500/40">
+                  <TrendingUp className="text-white" size={28} />
                 </div>
-                <span className="text-sm font-bold text-slate-600">5</span>
+                <span className="text-sm font-bold text-slate-400">5</span>
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-slate-100">Activity Stream</h3>
+              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-rose-200">Activity Stream</h3>
               <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                View recent pipeline changes
+                View recent pipeline changes and updates
               </p>
             </button>
 
             {/* Settings Module */}
             <button
               onClick={() => navigate('/roles')}
-              className="group rounded-[2rem] border border-slate-800 bg-slate-900/80 p-6 text-left transition hover:border-slate-700 hover:bg-slate-900"
+              className="group rounded-[2rem] border border-indigo-500/40 bg-gradient-to-br from-indigo-950/40 to-indigo-950/10 p-6 text-left shadow-lg shadow-indigo-950/20 transition hover:-translate-y-1 hover:border-indigo-500/60 hover:shadow-indigo-500/30"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="rounded-[1.2rem] bg-slate-900/80 p-4">
-                  <Settings className="text-slate-400" size={28} />
+                <div className="rounded-[1.2rem] bg-gradient-to-br from-indigo-500 to-indigo-600 p-4 shadow-lg shadow-indigo-500/40">
+                  <Settings className="text-white" size={28} />
                 </div>
-                <span className="text-sm font-bold text-slate-600">6</span>
+                <span className="text-sm font-bold text-slate-400">6</span>
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-slate-100">Settings</h3>
+              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-indigo-200">Settings</h3>
               <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                Configure roles and workflows
+                Configure roles, workflows, and preferences
               </p>
             </button>
 
