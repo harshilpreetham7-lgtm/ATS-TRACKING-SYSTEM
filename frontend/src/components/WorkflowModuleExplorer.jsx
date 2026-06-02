@@ -14,12 +14,12 @@ const iconMap = {
 };
 
 const accentMap = {
-  cyan: 'border-cyan-500/30 bg-cyan-500/10 text-cyan-200 ring-cyan-500/20',
-  sky: 'border-sky-500/30 bg-sky-500/10 text-sky-200 ring-sky-500/20',
-  emerald: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200 ring-emerald-500/20',
-  violet: 'border-violet-500/30 bg-violet-500/10 text-violet-200 ring-violet-500/20',
-  rose: 'border-rose-500/30 bg-rose-500/10 text-rose-200 ring-rose-500/20',
-  amber: 'border-amber-500/30 bg-amber-500/10 text-amber-200 ring-amber-500/20',
+  cyan: 'border-slate-700 bg-slate-900/60 text-slate-300 ring-slate-700',
+  sky: 'border-slate-700 bg-slate-900/60 text-slate-300 ring-slate-700',
+  emerald: 'border-slate-700 bg-slate-900/60 text-slate-300 ring-slate-700',
+  violet: 'border-slate-700 bg-slate-900/60 text-slate-300 ring-slate-700',
+  rose: 'border-slate-700 bg-slate-900/60 text-slate-300 ring-slate-700',
+  amber: 'border-slate-700 bg-slate-900/60 text-slate-300 ring-slate-700',
 };
 
 const locationSuggestions = [
