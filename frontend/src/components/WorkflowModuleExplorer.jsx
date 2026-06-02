@@ -101,17 +101,17 @@ const WorkflowModuleExplorer = ({
   return (
     <div className={mode === 'page' ? 'relative overflow-y-auto bg-slate-950' : 'fixed inset-0 z-50 overflow-y-auto bg-slate-950/95 backdrop-blur-xl'}>
       <div className="mx-auto flex min-h-screen max-w-[1600px] flex-col px-4 py-6 sm:px-6 lg:px-8">
-        <div className="rounded-[1.8rem] border border-slate-800 bg-slate-950/95 p-6 shadow-2xl shadow-slate-950/20">
+        <div className="rounded-[2rem] border border-slate-800 bg-slate-950/95 p-6 shadow-2xl shadow-slate-950/20">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Workflow modules</p>
-              <h2 className="mt-3 text-3xl font-semibold text-white">Open a module to see its data and steps.</h2>
+              <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">Workflow modules</p>
+              <h2 className="mt-3 text-3xl font-bold text-white">Click a module to see exactly what data, steps, and conditions it needs.</h2>
               <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-400">
-                Use these modules to define roles, review candidates, shortlist for interviews, issue offers, and close rejections in a clean hiring flow.
+                Use these modules to define roles, review candidates, shortlist for interviews, issue offers, and close rejections with a professional hiring process.
               </p>
             </div>
-            <div className="rounded-full border border-slate-700 bg-slate-900/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-300">
-              Modular workflow
+            <div className="rounded-full bg-slate-900/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-300 ring-1 ring-white/10">
+              Same dark system, modular workflow
             </div>
           </div>
 
@@ -129,17 +129,19 @@ const WorkflowModuleExplorer = ({
                     key={module.id}
                     type="button"
                     onClick={() => onSelectModule(module.id)}
-                    className={`group w-full rounded-[1.25rem] border p-4 text-left transition ${isActive ? `${accentMap[module.accent]} ring-1` : 'border-slate-800 bg-slate-900/80 text-slate-300 hover:border-slate-700 hover:bg-slate-900'}`}
+                    className={`group w-full rounded-[1.5rem] border p-4 text-left transition ${isActive ? `${accentMap[module.accent]} ring-1` : 'border-slate-800 bg-slate-900/80 text-slate-300 hover:border-slate-700 hover:bg-slate-900'}`}
                   >
                     <div className="flex items-start gap-3">
-                        <div className={`rounded-2xl p-3 ${isActive ? 'bg-white/5' : 'bg-slate-950/60'} ring-1 ring-white/5`}>
+                      <div className={`rounded-2xl p-3 ${isActive ? 'bg-white/5' : 'bg-slate-950/60'} ring-1 ring-white/5`}>
                         <ModuleIcon size={18} />
                       </div>
                       <div className="min-w-0 flex-1">
                           <div className="flex items-center justify-between gap-3">
                           <div className="flex items-center gap-3">
                             <p className="text-sm font-semibold text-white">{module.title}</p>
-                            {hasSavedDetails && previewShort && <span className="text-xs text-slate-400">• {previewShort}</span>}
+                            {hasSavedDetails && previewShort && (
+                              <span className="text-xs text-slate-300">• {previewShort}</span>
+                            )}
                           </div>
                           <div className="flex items-center gap-2">
                             {hasSavedDetails && (
@@ -154,7 +156,7 @@ const WorkflowModuleExplorer = ({
                                     setFormValues(saved?.values || {});
                                   }
                                 }}
-                                className="rounded-full border border-slate-700 bg-slate-900 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-200 transition hover:border-slate-500 hover:text-white"
+                                className="rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-200 ring-1 ring-emerald-500/20 hover:bg-emerald-500/20 transition"
                               >
                                 Saved
                               </button>
@@ -172,7 +174,7 @@ const WorkflowModuleExplorer = ({
             </div>
 
             <div className="rounded-[1.75rem] border border-slate-800 bg-slate-900/80 p-5">
-              <div className={`rounded-[1.4rem] border p-4 ${accentMap[activeModule.accent]}`}>
+              <div className={`rounded-[1.5rem] border p-4 ${accentMap[activeModule.accent]}`}>
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <div className="rounded-2xl bg-white/5 p-3 ring-1 ring-white/10">
@@ -183,7 +185,7 @@ const WorkflowModuleExplorer = ({
                       <h3 className="mt-1 text-2xl font-semibold text-white">{activeModule.title}</h3>
                     </div>
                   </div>
-                  <span className="rounded-full border border-slate-700 bg-slate-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-300">
+                  <span className="rounded-full bg-slate-950/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-300 ring-1 ring-white/10">
                     {activeModule.badge}
                   </span>
                 </div>
@@ -192,15 +194,15 @@ const WorkflowModuleExplorer = ({
 
               {activeModule.id === 'role-selection' ? (
                 <div className="mt-5 space-y-5">
-                  <div className="rounded-[1.4rem] bg-slate-950/80 p-4 ring-1 ring-white/5">
-                    <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Engagement type</p>
+                  <div className="rounded-[1.5rem] bg-slate-950/80 p-4 ring-1 ring-white/5">
+                    <p className="text-xs uppercase tracking-[0.24em] text-cyan-300">Engagement type</p>
                     <div className="mt-4 flex flex-wrap gap-2">
                       {activeModule.engagements.map((item) => (
                         <button
                           key={item.id}
                           type="button"
                           onClick={() => onSelectRoleType(item.id)}
-                          className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition ${selectedRoleType === item.id ? 'bg-slate-200 text-slate-950' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
+                          className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition ${selectedRoleType === item.id ? 'bg-cyan-500 text-slate-950' : 'bg-slate-900 text-slate-300 hover:bg-slate-800'}`}
                         >
                           {item.label}
                         </button>
@@ -215,8 +217,8 @@ const WorkflowModuleExplorer = ({
                       ))}
                     </div>
                   </div>
-                  <div className="rounded-[1.4rem] bg-slate-950/80 p-4 ring-1 ring-white/5">
-                    <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Role families</p>
+                  <div className="rounded-[1.5rem] bg-slate-950/80 p-4 ring-1 ring-white/5">
+                    <p className="text-xs uppercase tracking-[0.24em] text-cyan-300">Role families</p>
                     <div className="mt-4 grid gap-3 sm:grid-cols-2">
                       {activeModule.roles
                         .filter((role) => selectedRoleType === 'all' || role.engagement.toLowerCase().includes(selectedRoleType))
@@ -227,7 +229,7 @@ const WorkflowModuleExplorer = ({
                               key={role.id}
                               type="button"
                               onClick={() => onSelectRole(role)}
-                              className={`rounded-[1.25rem] border p-4 text-left transition ${selected ? 'border-slate-500 bg-slate-800/80 ring-1 ring-white/10' : 'border-slate-800 bg-slate-900/70 hover:border-slate-700'}`}
+                              className={`rounded-[1.25rem] border p-4 text-left transition ${selected ? 'border-cyan-500/60 bg-cyan-500/10 ring-1 ring-cyan-500/20' : 'border-slate-800 bg-slate-900/70 hover:border-slate-700'}`}
                             >
                               <p className="text-sm font-semibold text-white">{role.label}</p>
                               <p className="mt-2 text-xs uppercase tracking-[0.24em] text-slate-500">{role.level} • {role.engagement}</p>
@@ -240,16 +242,16 @@ const WorkflowModuleExplorer = ({
                 </div>
               ) : (
                 <div className="mt-5 space-y-5">
-                    <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="grid gap-3 sm:grid-cols-2">
                     {(activeModule.requirements || []).map((item) => (
-                        <div key={item} className="rounded-3xl bg-slate-950/80 p-4 ring-1 ring-white/5">
-                          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Required</p>
+                      <div key={item} className="rounded-3xl bg-slate-950/80 p-4 ring-1 ring-white/5">
+                        <p className="text-xs uppercase tracking-[0.24em] text-cyan-300">Required</p>
                         <p className="mt-3 text-sm text-slate-200">{item}</p>
                       </div>
                     ))}
                   </div>
-                    <div className="rounded-[1.4rem] bg-slate-950/80 p-4 ring-1 ring-white/5">
-                      <p className="text-xs uppercase tracking-[0.24em] text-slate-400">How it works</p>
+                  <div className="rounded-[1.5rem] bg-slate-950/80 p-4 ring-1 ring-white/5">
+                    <p className="text-xs uppercase tracking-[0.24em] text-cyan-300">How it works</p>
                     <ol className="mt-4 space-y-3 text-sm leading-6 text-slate-300">
                       {activeModule.steps.map((step, index) => (
                         <li key={step} className="flex gap-3">
