@@ -6,6 +6,11 @@ import Dashboard from './pages/Dashboard';
 import RolesPage from './pages/RolesPage';
 import PipelinePage from './pages/PipelinePage';
 import WorkflowWorkspacePage from './pages/WorkflowWorkspacePage';
+import AnalyticsPage from './pages/AnalyticsPage';
+import SettingsPage from './pages/SettingsPage';
+import TeamHubPage from './pages/TeamHubPage';
+import IntegrationsPage from './pages/IntegrationsPage';
+import ToolDetail from './pages/ToolDetail';
 import ErrorBoundary from './components/ErrorBoundary';
 import NotificationCenter from './components/NotificationCenter';
 import './App.css';
@@ -38,6 +43,26 @@ function App() {
             <Route
               path="/workflow"
               element={token ? <WorkflowWorkspacePage /> : <Navigate replace to="/login" />}
+            />
+            <Route
+              path="/analytics"
+              element={token ? <AnalyticsPage /> : <Navigate replace to="/login" />}
+            />
+            <Route
+              path="/settings"
+              element={token ? <SettingsPage /> : <Navigate replace to="/login" />}
+            />
+            <Route
+              path="/team"
+              element={token ? <TeamHubPage /> : <Navigate replace to="/login" />}
+            />
+            <Route
+              path="/integrations"
+              element={token ? <IntegrationsPage /> : <Navigate replace to="/login" />}
+            />
+            <Route
+              path="/tool/:toolId"
+              element={token ? <ToolDetail /> : <Navigate replace to="/login" />}
             />
             <Route path="/" element={<HomePage />} />
             <Route path="*" element={<Navigate replace to="/" />} />

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import api from '../services/api';
 import { DragDropContext } from 'react-beautiful-dnd';
 import NavBar from '../components/NavBar';
+import BackButton from '../components/BackButton';
 import PipelineStageTabs from '../components/PipelineStageTabs';
 import KanbanBoard from '../components/KanbanBoard';
 import SummaryCard from '../components/SummaryCard';
@@ -317,14 +318,27 @@ const PipelinePage = () => {
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <NavBar user={user} onLogout={logout} onSync={loadBoard} />
       <main className="mx-auto max-w-[1440px] px-4 pb-10 pt-4 sm:px-6 lg:px-8 lg:pb-12 lg:pt-5">
+        <div className="mb-4 flex items-center justify-start">
+          <BackButton to="/dashboard" />
+        </div>
         <section className="rounded-[2rem] border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-6 shadow-2xl shadow-slate-950/30 ring-1 ring-white/5 lg:p-7">
-          <div className="flex flex-wrap items-end justify-between gap-5">
-            <div>
+          <div className="flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
+            <div className="max-w-3xl">
               <p className="text-sm uppercase tracking-[0.3em] text-indigo-300">Pipeline workspace</p>
-              <h1 className="mt-3 text-3xl font-bold text-white sm:text-4xl">A dedicated page for candidate movement and stage tracking.</h1>
-              <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-300">
-                The board, stage descriptions, and hiring decisions live here so the dashboard stays clean and the workflow stays professional.
+              <h1 className="mt-3 text-4xl font-bold text-white sm:text-5xl">Move candidates faster with a premium hiring board.</h1>
+              <p className="mt-4 text-sm leading-7 text-slate-300">
+                This page is built for review-ready recruiting: clear columns, stage context, and a polished candidate detail experience.
               </p>
+            </div>
+            <div className="grid gap-3 sm:auto-cols-max sm:grid-flow-col">
+              <div className="rounded-3xl border border-slate-800 bg-slate-950/90 px-4 py-3 text-sm text-slate-300 shadow-slate-950/20 ring-1 ring-white/5">
+                <p className="font-semibold text-white">Live board</p>
+                <p className="mt-1">Drag candidates across stages.</p>
+              </div>
+              <div className="rounded-3xl border border-slate-800 bg-slate-950/90 px-4 py-3 text-sm text-slate-300 shadow-slate-950/20 ring-1 ring-white/5">
+                <p className="font-semibold text-white">Stage guidance</p>
+                <p className="mt-1">Review exact next steps at every stage.</p>
+              </div>
             </div>
           </div>
 
@@ -332,6 +346,21 @@ const PipelinePage = () => {
             <SummaryCard title="Open roles" value={totalJobs} subtitle="Active jobs in the pipeline." />
             <SummaryCard title="Live pipeline" value={totalApplications} subtitle="Candidates moving through stages." />
             <SummaryCard title="Offer conversion" value={`${conversionRate}%`} subtitle="Offers from the current pipeline." />
+          </div>
+
+          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+            <div className="rounded-[1.8rem] border border-slate-800 bg-slate-950/90 p-5 shadow-lg shadow-slate-950/20 ring-1 ring-white/5">
+              <p className="text-xs uppercase tracking-[0.3em] text-cyan-300">Presentation-ready</p>
+              <p className="mt-3 text-sm leading-6 text-slate-400">A cleaner pipeline layout helps the app look structured and professional during demos.</p>
+            </div>
+            <div className="rounded-[1.8rem] border border-slate-800 bg-slate-950/90 p-5 shadow-lg shadow-slate-950/20 ring-1 ring-white/5">
+              <p className="text-xs uppercase tracking-[0.3em] text-emerald-300">Workflow clarity</p>
+              <p className="mt-3 text-sm leading-6 text-slate-400">Status columns and actions are easy to scan at a glance.</p>
+            </div>
+            <div className="rounded-[1.8rem] border border-slate-800 bg-slate-950/90 p-5 shadow-lg shadow-slate-950/20 ring-1 ring-white/5">
+              <p className="text-xs uppercase tracking-[0.3em] text-rose-300">Recruiter focus</p>
+              <p className="mt-3 text-sm leading-6 text-slate-400">Built for hiring teams to review candidates faster and feel confident presenting the flow.</p>
+            </div>
           </div>
         </section>
 

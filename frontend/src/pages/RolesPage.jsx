@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, BadgeCheck, Briefcase, CheckCircle2, ListChecks, ShieldCheck, Sparkles, SlidersHorizontal, Star } from 'lucide-react';
 import NavBar from '../components/NavBar';
+import BackButton from '../components/BackButton';
 import { useAppStore } from '../store/useAppStore';
 import { workflowModules } from '../data/workflowModules';
 
@@ -37,6 +38,9 @@ const RolesPage = () => {
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <NavBar user={user} onLogout={logout} onSync={loadBoard} />
       <main className="mx-auto max-w-[1440px] px-4 pb-10 pt-4 sm:px-6 lg:px-8 lg:pb-12 lg:pt-5">
+        <div className="mb-4 flex items-center justify-start">
+          <BackButton to="/dashboard" />
+        </div>
         <section className="rounded-[2rem] border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-6 shadow-2xl shadow-slate-950/30 lg:p-7">
           <div className="flex flex-wrap items-end justify-between gap-5">
             <div>
@@ -66,13 +70,13 @@ const RolesPage = () => {
             </div>
             <div className="rounded-[1.5rem] border border-slate-800 bg-slate-950/80 p-4 shadow-lg shadow-slate-950/20 ring-1 ring-white/5">
               <p className="text-xs uppercase tracking-[0.24em] text-cyan-300">Candidate confidence</p>
-              <p className="mt-3 text-sm text-slate-300">Clear role cards, a detailed preview panel, and one-click workflow access make the platform feel ready for real hiring.</p>
+              <p className="mt-3 text-sm text-slate-300">Clear role cards, a detailed preview panel, and one-click workflow access make the platform feel ready for real hiring reviews.</p>
               <button
                 type="button"
-                onClick={() => navigate('/workflow?module=role-selection&role=' + selectedRole.id)}
+                onClick={() => navigate('/workflow?module=role-selection&role=' + selectedRole?.id)}
                 className="mt-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-slate-50 shadow-lg shadow-emerald-500/35 transition hover:from-emerald-400 hover:to-teal-400 hover:shadow-emerald-500/45"
               >
-                Open full detail page
+                Open workflow form
                 <ArrowRight size={16} />
               </button>
             </div>

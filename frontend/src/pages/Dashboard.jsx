@@ -196,7 +196,7 @@ const Dashboard = () => {
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {/* Roles Module */}
             <button
-              onClick={() => navigate('/roles')}
+              onClick={() => navigate('/tool/roles')}
               className="group rounded-[2rem] border border-purple-500/40 bg-gradient-to-br from-purple-950/40 to-purple-950/10 p-6 text-left shadow-lg shadow-purple-950/20 transition hover:-translate-y-1 hover:border-purple-500/60 hover:shadow-purple-500/30"
             >
               <div className="flex items-start justify-between gap-3">
@@ -213,7 +213,7 @@ const Dashboard = () => {
 
             {/* Pipeline Module */}
             <button
-              onClick={() => navigate('/pipeline')}
+              onClick={() => navigate('/tool/pipeline')}
               className="group rounded-[2rem] border border-cyan-500/40 bg-gradient-to-br from-cyan-950/40 to-cyan-950/10 p-6 text-left shadow-lg shadow-cyan-950/20 transition hover:-translate-y-1 hover:border-cyan-500/60 hover:shadow-cyan-500/30"
             >
               <div className="flex items-start justify-between gap-3">
@@ -230,7 +230,7 @@ const Dashboard = () => {
 
             {/* Workflow Module */}
             <button
-              onClick={() => navigate('/workflow?module=candidate-intake')}
+              onClick={() => navigate('/tool/application-data')}
               className="group rounded-[2rem] border border-amber-500/40 bg-gradient-to-br from-amber-950/40 to-amber-950/10 p-6 text-left shadow-lg shadow-amber-950/20 transition hover:-translate-y-1 hover:border-amber-500/60 hover:shadow-amber-500/30"
             >
               <div className="flex items-start justify-between gap-3">
@@ -247,7 +247,7 @@ const Dashboard = () => {
 
             {/* Analytics Module */}
             <button
-              onClick={() => navigate('/pipeline')}
+              onClick={() => navigate('/tool/analytics')}
               className="group rounded-[2rem] border border-emerald-500/40 bg-gradient-to-br from-emerald-950/40 to-emerald-950/10 p-6 text-left shadow-lg shadow-emerald-950/20 transition hover:-translate-y-1 hover:border-emerald-500/60 hover:shadow-emerald-500/30"
             >
               <div className="flex items-start justify-between gap-3">
@@ -264,7 +264,7 @@ const Dashboard = () => {
 
             {/* Recent Activity */}
             <button
-              onClick={() => navigate('/pipeline')}
+              onClick={() => navigate('/tool/activity')}
               className="group rounded-[2rem] border border-rose-500/40 bg-gradient-to-br from-rose-950/40 to-rose-950/10 p-6 text-left shadow-lg shadow-rose-950/20 transition hover:-translate-y-1 hover:border-rose-500/60 hover:shadow-rose-500/30"
             >
               <div className="flex items-start justify-between gap-3">
@@ -281,7 +281,7 @@ const Dashboard = () => {
 
             {/* Settings Module */}
             <button
-              onClick={() => navigate('/roles')}
+              onClick={() => navigate('/tool/settings')}
               className="group rounded-[2rem] border border-indigo-500/40 bg-gradient-to-br from-indigo-950/40 to-indigo-950/10 p-6 text-left shadow-lg shadow-indigo-950/20 transition hover:-translate-y-1 hover:border-indigo-500/60 hover:shadow-indigo-500/30"
             >
               <div className="flex items-start justify-between gap-3">
@@ -298,7 +298,7 @@ const Dashboard = () => {
 
             {/* Team Collaboration */}
             <button
-              onClick={() => navigate('/roles')}
+              onClick={() => navigate('/tool/team')}
               className="group rounded-[2rem] border border-teal-500/40 bg-gradient-to-br from-teal-950/40 to-teal-950/10 p-6 text-left shadow-lg shadow-teal-950/20 transition hover:-translate-y-1 hover:border-teal-500/60 hover:shadow-teal-500/30"
             >
               <div className="flex items-start justify-between gap-3">
@@ -315,7 +315,7 @@ const Dashboard = () => {
 
             {/* Integrations */}
             <button
-              onClick={() => navigate('/roles')}
+              onClick={() => navigate('/tool/integrations')}
               className="group rounded-[2rem] border border-pink-500/40 bg-gradient-to-br from-pink-950/40 to-pink-950/10 p-6 text-left shadow-lg shadow-pink-950/20 transition hover:-translate-y-1 hover:border-pink-500/60 hover:shadow-pink-500/30"
             >
               <div className="flex items-start justify-between gap-3">
