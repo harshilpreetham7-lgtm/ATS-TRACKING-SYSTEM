@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sample Interview Exam</title>
+  <style>
+    body { font-family: Inter, system-ui, Arial; background:#0f1724; color:#e6eef8; padding:24px }
+    .card{background:#07121d;padding:20px;border-radius:12px;max-width:820px;margin:24px auto}
+    label{display:block;margin-top:10px;color:#9fb4d6;font-size:12px}
+    input,textarea{width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid #22303f;background:#07101a;color:#e6eef8}
+    button{margin-top:12px;padding:10px 14px;border-radius:8px;background:#7c3aed;border:none;color:#fff;cursor:pointer}
+    .meta{font-size:13px;color:#9fb4d6}
+    .q{margin-top:12px;padding:12px;background:#02111a;border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Sample Interview Exam (MCQ)</h2>
+    <p class="meta">This is a sample exam page that demonstrates submitting results back to the backend webhook.</p>
+    <div id="meta"></div>
+    <form id="examForm">
+      <div class="q">
+        <p>1) What is the output of <code>[x for x in range(3)]</code> in Python?</p>
+        <label><input type="radio" name="q1" value="[0,1,2]" /> [0,1,2]</label>
+        <label><input type="radio" name="q1" value="(0,1,2)" /> (0,1,2)</label>
+        <label><input type="radio" name="q1" value="0 1 2" /> 0 1 2</label>
+      </div>
+      <div class="q">
+        <p>2) Which HTTP status code means "Created"?</p>
+        <label><input type="radio" name="q2" value="200" /> 200</label>
+        <label><input type="radio" name="q2" value="201" /> 201</label>
+        <label><input type="radio" name="q2" value="404" /> 404</label>
+      </div>
+      <div class="q">
+        <p>3) Short answer: describe how you would optimize a React list rendering large data.</p>
+        <textarea name="q3" rows="4"></textarea>
+      </div>
+      <button type="submit">Submit exam</button>
+    </form>
+    <div id="result" style="margin-top:12px;color:#b7e0ff"></div>
+  </div>
+
+  <script>
+    const qs = new URLSearchParams(location.search);
+    const token = qs.get('token');
+    const email = qs.get('email');
+    const applicationId = qs.get('applicationId');
+    const meta = document.getElementById('meta');
+    meta.innerText = `App: ${applicationId || 'N/A'}  Email: ${email || 'N/A'}  Token: ${token ? 'present' : 'none'}`;
+
+    document.getElementById('examForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      // Very simple scoring for demo: q1 correct, q2 correct => score 100 else lower
+      const q1 = document.querySelector('input[name="q1"]:checked')?.value;
+      const q2 = document.querySelector('input[name="q2"]:checked')?.value;
+      const q3 = document.querySelector('textarea[name="q3"]').value || '';
+      let score = 0;
+      if (q1 === '[0,1,2]') score += 50;
+      if (q2 === '201') score += 40;
+      if (q3.length > 20) score += 10;
+      const passed = score >= 70;
+
+      const payload = { token, passed, score, feedback: q3 };
+
+      // Post to backend webhook (adjust host if needed)
+      try {
+        const resp = await fetch('/api/exam/callback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await resp.json();
+        document.getElementById('result').innerText = 'Exam submitted — backend response:\n' + JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('result').innerText = 'Failed to post exam callback: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>

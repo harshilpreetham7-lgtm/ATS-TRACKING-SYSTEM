@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sample Candidate Form</title>
+  <style>
+    body { font-family: Inter, system-ui, Arial; background:#0f1724; color:#e6eef8; padding:24px }
+    .card{background:#0b1220;padding:20px;border-radius:12px;max-width:720px;margin:24px auto}
+    label{display:block;margin-top:10px;color:#9fb4d6;font-size:12px}
+    input,textarea{width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid #22303f;background:#07101a;color:#e6eef8}
+    button{margin-top:12px;padding:10px 14px;border-radius:8px;background:#06b6d4;border:none;color:#001;cursor:pointer}
+    .meta{font-size:13px;color:#9fb4d6}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Candidate Form (Sample)</h2>
+    <p class="meta">This is a local sample form used for manual testing. Fields are prefilled from query params when available.</p>
+    <div id="meta"></div>
+    <form id="candidateForm">
+      <label>Full name<input id="name" /></label>
+      <label>Email<input id="email" /></label>
+      <label>Phone<input id="phone" /></label>
+      <label>Experience (years)<input id="experience" /></label>
+      <label>Notice period<input id="notice" /></label>
+      <label>Current location<input id="location" /></label>
+      <label>Expected CTC<input id="ctc" /></label>
+      <label>Portfolio / GitHub<input id="portfolio" /></label>
+      <label>Why this role?<textarea id="why"></textarea></label>
+      <button type="submit">Submit form</button>
+    </form>
+    <div id="result" style="margin-top:12px;color:#b7e0ff"></div>
+  </div>
+
+  <script>
+    const qs = new URLSearchParams(location.search);
+    const token = qs.get('token');
+    const email = qs.get('email');
+    const applicationId = qs.get('applicationId');
+
+    if (email) document.getElementById('email').value = email;
+    if (applicationId) document.getElementById('meta').innerText = 'Application: ' + applicationId;
+    if (token) document.getElementById('meta').innerText += ' (token present)';
+
+    document.getElementById('candidateForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      // For the sample, we just show the collected data and pretend it's saved
+      const payload = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        experience: document.getElementById('experience').value,
+        notice: document.getElementById('notice').value,
+        location: document.getElementById('location').value,
+        expectedCtc: document.getElementById('ctc').value,
+        portfolio: document.getElementById('portfolio').value,
+        why: document.getElementById('why').value,
+        token,
+        applicationId,
+      };
+
+      document.getElementById('result').innerText = 'Form submitted (sample): ' + JSON.stringify(payload, null, 2);
+    });
+  </script>
+</body>
+</html>
