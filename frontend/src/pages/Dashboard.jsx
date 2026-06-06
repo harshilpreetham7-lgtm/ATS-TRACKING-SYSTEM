@@ -186,11 +186,10 @@ const Dashboard = () => {
             ATS <span className="bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 bg-clip-text text-transparent">Workspace</span>
           </h1>
           <p className="mt-4 text-lg leading-8 text-slate-400">
-            Manage your hiring workflow, track applications, and present a clear, high-trust recruiting product from the first click.
+            Manage your hiring workflow, track applications, and present a clear, high-trust recruiting product inspired by Greenhouse, Lever, and Workday.
           </p>
         </section>
 
-        {/* Quick Stats + Right column layout */}
         <div className="mb-12 grid gap-8 lg:grid-cols-[1fr_360px]">
           <div>
             <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

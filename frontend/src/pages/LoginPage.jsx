@@ -213,9 +213,17 @@ const LoginPage = () => {
               </>
             )}
             {(formError || error) && (
-              <div className="flex items-start gap-3 rounded-[1.2rem] border border-rose-500/30 bg-rose-500/10 p-4">
-                <AlertCircle size={18} className="mt-0.5 flex-shrink-0 text-rose-400" />
-                <p className="text-sm text-rose-200">{formError || error}</p>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3 rounded-[1.2rem] border border-rose-500/30 bg-rose-500/10 p-4">
+                  <AlertCircle size={18} className="mt-0.5 flex-shrink-0 text-rose-400" />
+                  <p className="text-sm text-rose-200">{formError || error}</p>
+                </div>
+                {error && error.includes('Unable to connect') && (
+                  <p className="text-xs text-slate-400">
+                    Check that the mock backend is running at{' '}
+                    <span className="font-semibold text-slate-100">http://localhost:5004</span>.
+                  </p>
+                )}
               </div>
             )}
             <button

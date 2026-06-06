@@ -17,6 +17,16 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (!error.response && error.request) {
+      error.message = 'Unable to connect to the ATS backend. Make sure the backend server is running on http://localhost:5004';
+    }
+    return Promise.reject(error);
+  }
+);
+
 export const setAuthToken = (token) => {
   if (token) {
     localStorage.setItem('ats_token', token);
