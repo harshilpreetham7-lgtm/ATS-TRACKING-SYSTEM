@@ -1,0 +1,15 @@
+{
+  "name": "ats",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm run dev -- --host 0.0.0.0 --port 5183",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "ddev": "npm run dev",
+    "start": "concurrently \"cd backend && npm start\" \"cd frontend && npm run preview -- --port 5186\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
