@@ -75,13 +75,7 @@ const LoginPage = () => {
               Designed for modern recruiting teams
             </div>
             <div className="max-w-2xl space-y-5">
-              <h1 className="text-4xl font-black tracking-tight text-white sm:text-5xl">A polished hiring workspace for recruiters who want impact and speed.</h1>
-              <p className="text-base leading-8 text-slate-400 sm:text-lg">
-                Clean onboarding, strong role clarity, and pipeline analytics in a premium interface built for demos and real recruiting workflows.
-              </p>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2">
+                <h1 className="text-4xl font-black tracking-tight text-white sm:text-5xl">A polished hiring workspace for recruiters who want impact, speed, and clarity.</h1>
               <div className="rounded-[1.8rem] border border-slate-800/90 bg-slate-950/80 p-5 shadow-lg shadow-slate-950/20 transition hover:border-cyan-500/40">
                 <p className="text-xs uppercase tracking-[0.32em] text-slate-500">Instant visibility</p>
                 <p className="mt-3 text-lg font-semibold text-white">Keep every candidate stage clear.</p>
