@@ -162,8 +162,62 @@ const Dashboard = () => {
     );
   }, [applications]);
 
-  const conversionRate = totalApplications ? Math.round((statusCount.offered / totalApplications) * 100) : 0;
-  const activeJob = selectedJob || jobs[0] || null;
+  const stageColor = {
+    applied: 'from-slate-500 to-cyan-500',
+    reviewing: 'from-cyan-500 to-blue-500',
+    shortlisted: 'from-amber-500 to-orange-500',
+    interviewed: 'from-violet-500 to-fuchsia-500',
+    offered: 'from-emerald-500 to-cyan-500',
+    rejected: 'from-rose-500 to-pink-500',
+  };
+
+  const getModuleIcon = (name) => {
+    switch (name) {
+      case 'role':
+        return Briefcase;
+      case 'data':
+        return ShieldCheck;
+      case 'review':
+        return CheckCircle;
+      case 'shortlist':
+        return Users;
+      case 'interview':
+        return Clock;
+      case 'offer':
+        return ShieldCheck;
+      case 'rejection':
+        return AlertCircle;
+      default:
+        return Workflow;
+    }
+  };
+
+  const moduleAccent = {
+    cyan: 'from-cyan-500 to-cyan-600',
+    sky: 'from-sky-500 to-sky-600',
+    emerald: 'from-emerald-500 to-emerald-600',
+    amber: 'from-amber-500 to-amber-600',
+    violet: 'from-violet-500 to-violet-600',
+    rose: 'from-rose-500 to-rose-600',
+    pink: 'from-pink-500 to-pink-600',
+    indigo: 'from-indigo-500 to-indigo-600',
+    teal: 'from-teal-500 to-teal-600',
+  };
+
+  const pipelineSummary = [
+    { label: 'Active roles', value: totalJobs, accent: 'from-indigo-500 to-cyan-500' },
+    { label: 'Pipeline velocity', value: `${Math.min(totalApplications * 3, 120)} / mo`, accent: 'from-rose-500 to-pink-500' },
+    { label: 'Offer rate', value: `${conversionRate}%`, accent: 'from-emerald-500 to-cyan-400' },
+  ];
+
+  const statusStages = statusColumns.map((stage) => ({
+    ...stage,
+    count: statusCount[stage.id] || 0,
+    percent: totalApplications ? Math.round((statusCount[stage.id] / totalApplications) * 100) : 0,
+    color: stageColor[stage.id] || 'from-slate-500 to-slate-500',
+  }));
+
+  const topModules = workflowModules.slice(0, 6);
 
   const handleSync = async () => {
     await loadBoard();
@@ -174,129 +228,119 @@ const Dashboard = () => {
       <NavBar user={user} onLogout={logout} onSync={handleSync} />
       <main className="mx-auto max-w-[1440px] px-4 pb-16 pt-6 sm:px-6 lg:px-8 lg:pb-20 lg:pt-8">
         {/* Hero Section */}
-        <section className="mb-12 text-center">
-          <p className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-300 ring-1 ring-emerald-500/30">
-            <Zap size={14} />
-            Workspace
-          </p>
-          <p className="mx-auto mt-4 inline-flex rounded-full border border-white/10 bg-slate-950/70 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-300 shadow-lg shadow-black/20">
-            Review-ready product flow for recruiters and hiring managers
-          </p>
-          <h1 className="mt-6 text-4xl font-black tracking-tight text-white sm:text-5xl">
-            ATS <span className="bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 bg-clip-text text-transparent">Workspace</span>
-          </h1>
-          <p className="mt-4 text-lg leading-8 text-slate-400">
-            Manage your hiring workflow, track applications, and present a clear, high-trust recruiting product inspired by Greenhouse, Lever, and Workday.
-          </p>
+        <section className="mb-12 overflow-hidden rounded-[2.5rem] border border-slate-800/80 bg-slate-900/80 p-8 shadow-[0_40px_120px_rgba(15,23,42,0.55)] backdrop-blur-xl relative">
+          <div className="pointer-events-none absolute -right-20 top-8 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
+          <div className="pointer-events-none absolute left-16 top-10 h-56 w-56 rounded-full bg-violet-500/10 blur-3xl" />
+          <div className="relative z-10 grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-center">
+            <div>
+              <p className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-300 ring-1 ring-emerald-500/30">
+                <Zap size={14} />
+                Workspace
+              </p>
+              <h1 className="mt-6 text-4xl font-black tracking-tight text-white sm:text-5xl">
+                ATS Dashboard for modern recruiting teams
+              </h1>
+              <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-400">
+                See your pipeline performance at a glance, surface the next hiring priorities, and keep the team aligned with polished stage insights.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {pipelineSummary.map((item) => (
+                <div key={item.label} className="rounded-[1.8rem] border border-slate-800/70 bg-slate-950/90 p-5 shadow-xl shadow-black/20">
+                  <p className="text-xs uppercase tracking-[0.26em] text-slate-400">{item.label}</p>
+                  <p className="mt-4 text-3xl font-black text-white">{item.value}</p>
+                  <div className={`mt-4 h-2 rounded-full bg-gradient-to-r ${item.accent}`} />
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
 
-        <div className="mb-12 grid gap-8 lg:grid-cols-[1fr_360px]">
-          <div>
-            <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mb-10 grid gap-8 xl:grid-cols-[1.8fr_1fr]">
+          <div className="space-y-8">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <SummaryCard title="Open roles" value={totalJobs} subtitle="Active positions" accent="from-indigo-500 via-indigo-600 to-indigo-400" />
-              <SummaryCard title="Applications" value={totalApplications} subtitle="In pipeline" accent="from-rose-500 via-rose-600 to-pink-400" />
-              <SummaryCard title="Shortlisted" value={statusCount.shortlisted} subtitle="Ready to interview" accent="from-amber-500 via-amber-600 to-amber-400" />
-              <SummaryCard title="Conversion" value={`${conversionRate}%`} subtitle="Offer rate" accent="from-emerald-400 via-emerald-500 to-cyan-400" />
+              <SummaryCard title="Pipeline" value={totalApplications} subtitle="Total applications" accent="from-rose-500 via-rose-600 to-pink-400" />
+              <SummaryCard title="Shortlisted" value={statusCount.shortlisted} subtitle="To interview" accent="from-amber-500 via-amber-600 to-amber-400" />
+              <SummaryCard title="Offer rate" value={`${conversionRate}%`} subtitle="Team conversion" accent="from-emerald-400 via-emerald-500 to-cyan-400" />
             </div>
 
-            {/* Module Grid */}
-            <section className="space-y-6">
-              <div>
-                <p className="text-sm uppercase tracking-[0.3em] text-white/60">Available Modules</p>
-                <h2 className="mt-2 text-2xl font-semibold text-white">Access your ATS tools</h2>
-              </div>
-              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                {/* Roles Module */}
-                <button
-                  onClick={() => navigate('/tool/roles')}
-                  className="group rounded-[2rem] border border-purple-500/40 bg-gradient-to-br from-purple-950/40 to-purple-950/10 p-6 text-left shadow-lg shadow-purple-950/20 transition hover:-translate-y-1 hover:border-purple-500/60 hover:shadow-purple-500/30"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="rounded-[1.2rem] bg-gradient-to-br from-purple-500 to-purple-600 p-4 shadow-lg shadow-purple-500/40">
-                      <Briefcase className="text-white" size={28} />
-                    </div>
-                    <span className="text-sm font-bold text-slate-400">1</span>
+            <div className="grid gap-6 lg:grid-cols-[1.25fr_0.85fr]">
+              <section className="rounded-[2rem] border border-white/10 bg-slate-900/70 p-6 shadow-2xl shadow-black/20">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Pipeline snapshot</p>
+                    <h2 className="mt-2 text-2xl font-semibold text-white">Hiring stage health</h2>
                   </div>
-                  <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-purple-200">Browse Roles</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                    Explore open positions with a polished card layout and clear role metadata.
-                  </p>
-                </button>
-
-                {/* Pipeline Module */}
-                <button
-                  onClick={() => navigate('/tool/pipeline')}
-                  className="group rounded-[2rem] border border-cyan-500/40 bg-gradient-to-br from-cyan-950/40 to-cyan-950/10 p-6 text-left shadow-lg shadow-cyan-950/20 transition hover:-translate-y-1 hover:border-cyan-500/60 hover:shadow-cyan-500/30"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="rounded-[1.2rem] bg-gradient-to-br from-cyan-500 to-cyan-600 p-4 shadow-lg shadow-cyan-500/40">
-                      <Brain className="text-white" size={28} />
-                    </div>
-                    <span className="text-sm font-bold text-slate-400">2</span>
-                  </div>
-                  <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-cyan-200">Pipeline Board</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                    Drag and drop candidates through stages with action-rich candidate details.
-                  </p>
-                </button>
-
-                {/* Workflow Module */}
-                <button
-                  onClick={() => navigate('/tool/application-data')}
-                  className="group rounded-[2rem] border border-amber-500/40 bg-gradient-to-br from-amber-950/40 to-amber-950/10 p-6 text-left shadow-lg shadow-amber-950/20 transition hover:-translate-y-1 hover:border-amber-500/60 hover:shadow-amber-500/30"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="rounded-[1.2rem] bg-gradient-to-br from-amber-500 to-amber-600 p-4 shadow-lg shadow-amber-500/40">
-                      <Zap className="text-white" size={28} />
-                    </div>
-                    <span className="inline-flex items-center rounded-full bg-amber-500/20 px-2 py-1 text-xs font-bold text-amber-300 ring-1 ring-amber-500/40">PRO</span>
-                  </div>
-                  <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-amber-200">Workflow Forms</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                    Create structured workflows for any process
-                  </p>
-                </button>
-
-                {/* Analytics Module */}
-                <button
-                  onClick={() => navigate('/tool/analytics')}
-                  className="group rounded-[2rem] border border-emerald-500/40 bg-gradient-to-br from-emerald-950/40 to-emerald-950/10 p-6 text-left shadow-lg shadow-emerald-950/20 transition hover:-translate-y-1 hover:border-emerald-500/60 hover:shadow-emerald-500/30"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="rounded-[1.2rem] bg-gradient-to-br from-emerald-500 to-emerald-600 p-4 shadow-lg shadow-emerald-500/40">
-                      <BarChart3 className="text-white" size={28} />
-                    </div>
-                    <span className="text-sm font-bold text-slate-400">4</span>
-                  </div>
-                  <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-emerald-200">Analytics</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                    Track pipeline metrics and hiring insights
-                  </p>
-                </button>
-              </div>
-            </section>
-          </div>
-          
-          {/* Right column: live activity + mini chart */}
-          <aside className="space-y-6">
-            <div className="rounded-[1.4rem] border border-slate-800 bg-slate-900/60 p-5 shadow-lg">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Live activity</p>
-                  <h3 className="mt-1 text-lg font-semibold text-white">Recent events</h3>
+                  <button onClick={handleSync} className="inline-flex items-center gap-2 rounded-full bg-slate-800/70 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-700/80">
+                    Sync board
+                  </button>
                 </div>
-                <button onClick={handleSync} className="rounded-full bg-slate-800/60 px-3 py-1 text-xs text-slate-200">Sync</button>
+
+                <div className="mt-6 space-y-4">
+                  {statusStages.map((stage) => (
+                    <div key={stage.id} className="space-y-3">
+                      <div className="flex items-center justify-between gap-4">
+                        <div>
+                          <p className="text-sm font-semibold text-white">{stage.title}</p>
+                          <p className="text-xs uppercase tracking-[0.28em] text-slate-500">{stage.count} candidates</p>
+                        </div>
+                        <span className="text-sm font-semibold text-slate-300">{stage.percent}%</span>
+                      </div>
+                      <div className="h-2 overflow-hidden rounded-full bg-slate-800">
+                        <div className={`h-full rounded-full bg-gradient-to-r ${stage.color}`} style={{ width: `${stage.percent}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <section className="rounded-[2rem] border border-white/10 bg-slate-900/70 p-6 shadow-2xl shadow-black/20">
+                <p className="text-sm uppercase tracking-[0.3em] text-slate-400">Stage guide</p>
+                <h2 className="mt-2 text-2xl font-semibold text-white">What happens next</h2>
+                <div className="mt-5 grid gap-4 lg:grid-cols-2">
+                  {stageDefinitions.slice(0, 4).map((item) => (
+                    <div key={item.id} className="rounded-[1.8rem] border border-slate-800/50 bg-slate-950/80 p-4">
+                      <p className="text-sm font-semibold text-slate-100">{item.title}</p>
+                      <p className="mt-2 text-sm leading-6 text-slate-400">{item.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <aside className="space-y-6">
+            <div className="rounded-[2rem] border border-slate-800/70 bg-slate-900/70 p-6 shadow-2xl shadow-black/20">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Active role</p>
+                  <h3 className="mt-1 text-xl font-semibold text-white">{activeJob?.title || 'No job selected'}</h3>
+                </div>
+                <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-300 ring-1 ring-emerald-500/20">Active</span>
               </div>
-              <div className="mt-4 space-y-3">
+              <div className="mt-5 space-y-3 text-sm text-slate-300">
+                <p>{activeJob?.company || 'ATS Team'} • {activeJob?.location || 'Remote'}</p>
+                <p>{activeJob?.type || 'Full-time'}</p>
+                <p className="text-slate-400">{activeJob?.description || 'Select a role from the board to see details here.'}</p>
+              </div>
+            </div>
+
+            <div className="rounded-[2rem] border border-slate-800/70 bg-slate-900/70 p-6 shadow-2xl shadow-black/20">
+              <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Live activity</p>
+              <h3 className="mt-1 text-xl font-semibold text-white">Recent updates</h3>
+              <div className="mt-5 space-y-4">
                 {recentApplications.length === 0 ? (
-                  <p className="text-slate-500">No recent activity — your board will populate here.</p>
+                  <p className="text-slate-500">No recent activity yet. Sync the board to refresh.</p>
                 ) : (
-                  recentApplications.map((a) => (
-                    <div key={a._id} className="flex items-start gap-3">
-                      <div className="h-9 w-9 rounded-full bg-gradient-to-br from-pink-500 to-fuchsia-500 flex items-center justify-center text-white font-bold">{(a.candidateName || 'C').charAt(0)}</div>
-                      <div className="flex-1">
-                        <p className="text-sm font-semibold text-white">{a.candidateName || 'Candidate'}</p>
-                        <p className="text-xs text-slate-500">{a.job?.title || 'Role'} • {a.status || 'New'}</p>
+                  recentApplications.map((application) => (
+                    <div key={application._id} className="rounded-[1.6rem] border border-slate-800/70 bg-slate-950/80 p-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <div>
+                          <p className="font-semibold text-white">{application.candidateName || 'Candidate'}</p>
+                          <p className="text-xs text-slate-500">{application.job?.title || 'Role'}</p>
+                        </div>
+                        <span className="rounded-full bg-slate-800/90 px-3 py-1 text-xs uppercase tracking-[0.24em] text-slate-300">{application.status || 'New'}</span>
                       </div>
                     </div>
                   ))
@@ -304,171 +348,46 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="rounded-[1.4rem] border border-slate-800 bg-slate-900/60 p-5 shadow-lg">
-              <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Applications trend</p>
-              <h3 className="mt-1 text-lg font-semibold text-white">Last 10 events</h3>
-              <div className="mt-4">
-                {/* simple sparkline using application counts */}
-                <Sparkline apps={applications} className="h-24 w-full" />
-              </div>
-            </div>
-
-            <div className="rounded-[1.4rem] border border-slate-800 bg-slate-900/60 p-5 shadow-lg">
-              <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Top sources</p>
-              <div className="mt-3 space-y-2 text-sm text-slate-300">
-                {Object.entries(statusCount).slice(0, 5).map(([k, v]) => (
-                  <div key={k} className="flex items-center justify-between">
-                    <span className="capitalize">{k}</span>
-                    <span className="font-semibold text-white">{v}</span>
-                  </div>
-                ))}
+            <div className="rounded-[2rem] border border-slate-800/70 bg-slate-900/70 p-6 shadow-2xl shadow-black/20">
+              <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Trend</p>
+              <h3 className="mt-1 text-xl font-semibold text-white">Application momentum</h3>
+              <div className="mt-5 overflow-hidden rounded-[1.5rem] bg-slate-950/80 p-4">
+                <Sparkline apps={applications} className="h-28 w-full" />
               </div>
             </div>
           </aside>
         </div>
 
-        {/* Module Grid */}
         <section className="space-y-6">
-          <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-white/60">Available Modules</p>
-            <h2 className="mt-2 text-2xl font-semibold text-white">Access your ATS tools</h2>
-          </div>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {/* Roles Module */}
-            <button
-              onClick={() => navigate('/tool/roles')}
-              className="group rounded-[2rem] border border-purple-500/40 bg-gradient-to-br from-purple-950/40 to-purple-950/10 p-6 text-left shadow-lg shadow-purple-950/20 transition hover:-translate-y-1 hover:border-purple-500/60 hover:shadow-purple-500/30"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="rounded-[1.2rem] bg-gradient-to-br from-purple-500 to-purple-600 p-4 shadow-lg shadow-purple-500/40">
-                  <Briefcase className="text-white" size={28} />
-                </div>
-                <span className="text-sm font-bold text-slate-400">1</span>
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-purple-200">Browse Roles</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                Explore open positions with a polished card layout and clear role metadata.
-              </p>
-            </button>
-
-            {/* Pipeline Module */}
-            <button
-              onClick={() => navigate('/tool/pipeline')}
-              className="group rounded-[2rem] border border-cyan-500/40 bg-gradient-to-br from-cyan-950/40 to-cyan-950/10 p-6 text-left shadow-lg shadow-cyan-950/20 transition hover:-translate-y-1 hover:border-cyan-500/60 hover:shadow-cyan-500/30"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="rounded-[1.2rem] bg-gradient-to-br from-cyan-500 to-cyan-600 p-4 shadow-lg shadow-cyan-500/40">
-                  <Brain className="text-white" size={28} />
-                </div>
-                <span className="text-sm font-bold text-slate-400">2</span>
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-cyan-200">Pipeline Board</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                Drag and drop candidates through stages with action-rich candidate details.
-              </p>
-            </button>
-
-            {/* Workflow Module */}
-            <button
-              onClick={() => navigate('/tool/application-data')}
-              className="group rounded-[2rem] border border-amber-500/40 bg-gradient-to-br from-amber-950/40 to-amber-950/10 p-6 text-left shadow-lg shadow-amber-950/20 transition hover:-translate-y-1 hover:border-amber-500/60 hover:shadow-amber-500/30"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="rounded-[1.2rem] bg-gradient-to-br from-amber-500 to-amber-600 p-4 shadow-lg shadow-amber-500/40">
-                  <Zap className="text-white" size={28} />
-                </div>
-                <span className="inline-flex items-center rounded-full bg-amber-500/20 px-2 py-1 text-xs font-bold text-amber-300 ring-1 ring-amber-500/40">PRO</span>
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-amber-200">Workflow Forms</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                Create structured workflows for any process
-              </p>
-            </button>
-
-            {/* Analytics Module */}
-            <button
-              onClick={() => navigate('/tool/analytics')}
-              className="group rounded-[2rem] border border-emerald-500/40 bg-gradient-to-br from-emerald-950/40 to-emerald-950/10 p-6 text-left shadow-lg shadow-emerald-950/20 transition hover:-translate-y-1 hover:border-emerald-500/60 hover:shadow-emerald-500/30"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="rounded-[1.2rem] bg-gradient-to-br from-emerald-500 to-emerald-600 p-4 shadow-lg shadow-emerald-500/40">
-                  <BarChart3 className="text-white" size={28} />
-                </div>
-                <span className="text-sm font-bold text-slate-400">4</span>
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-emerald-200">Analytics</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                Track pipeline metrics and hiring insights
-              </p>
-            </button>
-
-            {/* Recent Activity */}
-            <button
-              onClick={() => navigate('/tool/activity')}
-              className="group rounded-[2rem] border border-rose-500/40 bg-gradient-to-br from-rose-950/40 to-rose-950/10 p-6 text-left shadow-lg shadow-rose-950/20 transition hover:-translate-y-1 hover:border-rose-500/60 hover:shadow-rose-500/30"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="rounded-[1.2rem] bg-gradient-to-br from-rose-500 to-rose-600 p-4 shadow-lg shadow-rose-500/40">
-                  <TrendingUp className="text-white" size={28} />
-                </div>
-                <span className="text-sm font-bold text-slate-400">5</span>
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-rose-200">Activity Stream</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                View recent pipeline changes and updates
-              </p>
-            </button>
-
-            {/* Settings Module */}
-            <button
-              onClick={() => navigate('/tool/settings')}
-              className="group rounded-[2rem] border border-indigo-500/40 bg-gradient-to-br from-indigo-950/40 to-indigo-950/10 p-6 text-left shadow-lg shadow-indigo-950/20 transition hover:-translate-y-1 hover:border-indigo-500/60 hover:shadow-indigo-500/30"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="rounded-[1.2rem] bg-gradient-to-br from-indigo-500 to-indigo-600 p-4 shadow-lg shadow-indigo-500/40">
-                  <Settings className="text-white" size={28} />
-                </div>
-                <span className="text-sm font-bold text-slate-400">6</span>
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-indigo-200">Settings</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                Configure roles, workflows, and preferences
-              </p>
-            </button>
-
-            {/* Team Collaboration */}
-            <button
-              onClick={() => navigate('/tool/team')}
-              className="group rounded-[2rem] border border-teal-500/40 bg-gradient-to-br from-teal-950/40 to-teal-950/10 p-6 text-left shadow-lg shadow-teal-950/20 transition hover:-translate-y-1 hover:border-teal-500/60 hover:shadow-teal-500/30"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="rounded-[1.2rem] bg-gradient-to-br from-teal-500 to-teal-600 p-4 shadow-lg shadow-teal-500/40">
-                  <Users className="text-white" size={28} />
-                </div>
-                <span className="text-sm font-bold text-slate-400">7</span>
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-teal-200">Team Hub</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                Collaborate with your hiring team
-              </p>
-            </button>
-
-            {/* Integrations */}
-            <button
-              onClick={() => navigate('/tool/integrations')}
-              className="group rounded-[2rem] border border-pink-500/40 bg-gradient-to-br from-pink-950/40 to-pink-950/10 p-6 text-left shadow-lg shadow-pink-950/20 transition hover:-translate-y-1 hover:border-pink-500/60 hover:shadow-pink-500/30"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="rounded-[1.2rem] bg-gradient-to-br from-pink-500 to-pink-600 p-4 shadow-lg shadow-pink-500/40">
-                  <Laptop className="text-white" size={28} />
-                </div>
-                <span className="text-sm font-bold text-slate-400">8</span>
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-white transition group-hover:text-pink-200">Integrations</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-400 transition group-hover:text-slate-300">
-                Connect with your favorite tools
-              </p>
-            </button>
+          <SectionHeader
+            eyebrow="Smart modules"
+            title="Rapid access to your hiring toolkit"
+            description="Build your process from a flexible module library, then move quickly between role setup, application intake, and review workflows."
+          />
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {topModules.map((module) => {
+              const Icon = getModuleIcon(module.icon);
+              return (
+                <button
+                  key={module.id}
+                  onClick={() => navigate(`/tool/${module.id}`)}
+                  className="group overflow-hidden rounded-[2rem] border border-slate-800/70 bg-slate-950/80 p-6 text-left shadow-2xl shadow-black/20 transition duration-300 hover:-translate-y-1 hover:border-cyan-500/40 hover:bg-slate-900/90"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className={`rounded-[1.4rem] bg-gradient-to-br ${moduleAccent[module.accent] || 'from-slate-500 to-slate-700'} p-4 shadow-lg shadow-black/30`}>
+                      <Icon className="text-white" size={26} />
+                    </div>
+                    <span className="text-sm font-semibold text-slate-400">{module.badge}</span>
+                  </div>
+                  <h3 className="mt-5 text-xl font-semibold text-white transition group-hover:text-cyan-200">{module.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-400">{module.summary}</p>
+                  <div className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 transition group-hover:text-cyan-200">
+                    Explore
+                    <ArrowRight size={16} />
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </section>
       </main>
